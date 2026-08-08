@@ -6,7 +6,7 @@
 	(paper "A4")
 	(title_block
 		(title "Sensors")
-		(date "2026-08-08")
+		(date "2026-08-09")
 		(rev "3.0")
 		(comment 1 "Department of EECS- AIoT and Energy Management Lab")
 		(comment 2 "National Taipei University of Technology 國立臺北科技大學")
@@ -2081,8 +2081,9 @@
 				(justify left)
 			)
 		)
-		(property "Value" ""
+		(property "Value" "GY-906"
 			(at 64.77 102.87 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2167,8 +2168,9 @@
 				(justify left)
 			)
 		)
-		(property "Value" ""
-			(at 172.72 102.87 0)
+		(property "Value" "INMP441"
+			(at 189.484 110.998 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2415,8 +2417,9 @@
 				(justify left)
 			)
 		)
-		(property "Value" ""
+		(property "Value" "INA219"
 			(at 226.06 102.87 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2741,8 +2744,9 @@
 				(justify left)
 			)
 		)
-		(property "Value" ""
+		(property "Value" "STEVAL-MKIGIBV2"
 			(at 118.11 102.87 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
