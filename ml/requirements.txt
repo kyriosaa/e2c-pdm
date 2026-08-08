@@ -1,0 +1,25 @@
+# E2C-PDM offline ML pipeline
+#
+# PYTHON VERSION SPLIT -- see ml/README.md
+#
+#   ml.sessions, ml.data_loader, ml.features, ml.studies.*
+#       need only numpy + scipy (+ matplotlib for plots).
+#       Run on any modern Python, including 3.14.
+#
+#   ml.train_autoencoder, ml.evaluate, ml.quantize
+#       need TensorFlow, which has NO Python 3.14 wheels as of 2026-07.
+#       Create a 3.12 environment for these:
+#           py -3.12 -m venv .venv-train
+#           .venv-train\Scripts\activate
+#           pip install -r ml/requirements.txt
+#       Cached features in data/interim/features/ are plain .npy and are
+#       shared between environments -- no need to re-extract.
+
+# --- feature pipeline (any Python)
+numpy>=1.26
+scipy>=1.11
+matplotlib>=3.8
+
+# --- training / quantization (Python <= 3.12)
+tensorflow>=2.16 ; python_version < "3.13"
+scikit-learn>=1.4

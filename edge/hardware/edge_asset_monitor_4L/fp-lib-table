@@ -1,0 +1,5 @@
+(fp_lib_table
+	(version 7)
+	(lib (name "edge_asset_monitor") (type "KiCad") (uri "${KIPRJMOD}/edge_asset_monitor_4L.pretty") (options "") (descr ""))
+	(lib (name "edge_asset_monitor") (type "KiCad") (uri "${KIPRJMOD}/edge_asset_monitor_4L.pretty") (options "") (descr ""))
+)
