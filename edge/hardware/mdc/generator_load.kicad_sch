@@ -6,7 +6,7 @@
 	(paper "A4")
 	(title_block
 		(title "Generator Load")
-		(date "2026-08-08")
+		(date "2026-08-09")
 		(rev "3.0")
 		(company "Components not part of PCB layout")
 		(comment 1 "Department of EECS- AIoT and Energy Management Lab")
@@ -1200,7 +1200,7 @@
 		(body_style 1)
 		(exclude_from_sim no)
 		(in_bom yes)
-		(on_board yes)
+		(on_board no)
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "22ae431b-5610-4833-97fd-97213a8a7203")
@@ -1277,6 +1277,7 @@
 	(symbol
 		(lib_id "Device:D")
 		(at 132.08 104.14 90)
+		(mirror x)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -1286,7 +1287,7 @@
 		(dnp no)
 		(uuid "773cee15-1a75-4e60-a3b7-37f356f6590a")
 		(property "Reference" "D1"
-			(at 133.604 103.378 90)
+			(at 133.604 104.902 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1297,7 +1298,7 @@
 			)
 		)
 		(property "Value" "D"
-			(at 133.604 105.1559 90)
+			(at 133.604 103.1241 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
