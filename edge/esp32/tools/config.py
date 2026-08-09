@@ -39,7 +39,10 @@ RAW_ROOT = os.path.normpath(os.path.join(
 # ---------------------------------------------------------------------------
 # One session                                             data_catcher.py
 # ---------------------------------------------------------------------------
-SESSION_LABEL = 'healthy24V_motor_baseline'
+# Motor replaced 2026-08-09. The new part is rated 12 V / 20 000 rpm nominal,
+# 1.4 A no-load, 5.5 A starting. Everything recorded before that date is a
+# DIFFERENT MOTOR and is not a baseline for anything recorded after it.
+SESSION_LABEL = 'healthy12V'
 # SESSION_LABEL = 'test'
 RUN_SECONDS   = int(2 * 3600)       # 2hr run -- short enough that a cell sits
                                     # inside one ambient condition. A 6 h run
@@ -91,7 +94,7 @@ AUDIO_SR_HZ   = 16000
 # Free-text notes that belong with the recording rather than in a lab notebook.
 # Fill these in before each run -- they end up in session.json and are the only
 # record of the physical setup.
-MOTOR_VOLTAGE_V = 24.0
+MOTOR_VOLTAGE_V = 12.0              # rated voltage of the 2026-08-09 motor
 MECHANICAL_LOAD = 'none'            # e.g. 'none', 'eddy_brake_gap8mm'
                                     # record the magnet gap -- it IS the load
                                     # setting. NOT a flywheel: pure inertia adds
@@ -126,3 +129,32 @@ COPY_CHUNK = 8 * 1024 * 1024   # 8 MiB: large enough that USB throughput, not
 # ---------------------------------------------------------------------------
 # Credentials are NOT here -- see private.py. This is just the network timeout.
 SMTP_TIMEOUT_S = 15
+
+# ---------------------------------------------------------------------------
+# Terminal colour            data_catcher.py + edge/rpi/pi_edge_twin.py
+# ---------------------------------------------------------------------------
+# These lived in private.py until 2026-08-09. Nothing about them is secret, and
+# keeping them in an untracked file is what let them drift out of step with the
+# code: private.py defined six of these keys while data_catcher.py's status line
+# indexed nine, so the first status packet of every run raised KeyError('GRAY')
+# and ended the session ~1 s in. Tracked here, a missing key is visible in the
+# diff instead of at 3 a.m. Add a key here BEFORE using it in a format string.
+COLOR = {
+    'RED':     '\033[91m',
+    'GREEN':   '\033[92m',
+    'BLUE':    '\033[94m',
+    'YELLOW':  '\033[93m',
+    'WHITE':   '\033[37m',
+    'CYAN':    '\033[96m',
+    'MAGENTA': '\033[95m',
+    'GRAY':    '\033[90m',
+    'ORANGE':  '\033[38;5;208m',
+    'RESET':   '\033[0m',
+}
+
+# Set False to strip the escape codes -- for a terminal that does not handle
+# them, or when piping a run to a log file. Replaces the old behaviour where
+# colour was implicitly off whenever private.py was missing.
+USE_COLOR = True
+if not USE_COLOR:
+    COLOR = {k: '' for k in COLOR}

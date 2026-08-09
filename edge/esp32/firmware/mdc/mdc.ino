@@ -45,12 +45,54 @@
 #define MOTOR_R_EN 38
 #define MOTOR_L_EN 39
 
+// ACS712-30A on the motor's +12 V lead, read through the 10k/15k divider on the
+// sensors sheet (net ISENSE). The sensor swings 0-5 V and this ADC reads to
+// ~3.1 V, so the divider is not optional -- without it the pin is over-driven.
+#define CURRENT_SENSE_PIN 7                                  // ADC1_CH6
+
 // run config
 static const float    TRIP_TEMP_C     = 70.0f;                      // kills system at 70 deg (based on the ISO-13732-1 burn threshold)
 static const uint32_t TEMP_STALE_MS   = 5000;                       // sensor-lost timeout
 static const uint32_t MAX_RUN_MS      = 6UL * 60UL * 60UL * 1000UL; // 6 h cap
-static const int      MOTOR_SPEED     = 255;                        // -255 to 255
+// Running duty, -255..255. This is the THROTTLE. Lower it to run slower --
+// do not use the PSU current limit for that. A current-limited motor changes
+// speed on its own as friction and temperature drift, so the operating point
+// would not be stable within a session, let alone between them.
+// Effective motor voltage is roughly supply x MOTOR_SPEED/255.
+static const int      MOTOR_SPEED     = 150;
+
+// Kick-start. Breaking away needs more torque than keeping turning, so a low
+// MOTOR_SPEED may not start the motor at all -- it sits and squeals instead.
+// Start at KICK_SPEED for KICK_MS, then ease down to MOTOR_SPEED. If
+// MOTOR_SPEED >= KICK_SPEED there is nothing to kick and this does nothing.
+// Non-blocking: the loop keeps running, so 'X' still stops the motor mid-kick.
+// Kept only as high as it needs to be -- a harder kick than necessary just
+// slams the coupling and shakes the frame on every start.
+static const int      KICK_SPEED      = 160;
+static const uint32_t KICK_MS         = 1500;   // full duty, to break away
+static const uint32_t RAMP_MS         = 2000;   // then ease down to MOTOR_SPEED
+
+// Why ease down rather than step down: breaking away from rest needs far more
+// torque than staying turning, so the motor can be spinning happily at full
+// duty and still stall if the duty is yanked straight back to MOTOR_SPEED
+// before it has picked up speed. The ramp lets it settle instead.
+
 static const uint32_t WDT_TIMEOUT_MS  = 5000;                       // watchdog timeout
+
+// Current sensing. The 30 A part gives 66 mV/A, which the divider scales to
+// ~39.6 mV/A at the pin -- coarse for a motor drawing 1-6 A, so the reading is
+// averaged over CURRENT_SAMPLES rather than taken as a single sample. The burst
+// also spans several PWM periods, which matters: the drive is chopped, so one
+// instantaneous sample says nothing useful about the mean current.
+static const float    CURRENT_DIVIDER  = 15.0f / (10.0f + 15.0f);   // 0.6
+static const float    ACS712_MV_PER_A  = 66.0f;                     // 30 A variant
+static const int      CURRENT_SAMPLES  = 64;
+
+// Zero-current output, measured at boot while the motor is definitely off.
+// Nominally VCC/2 x divider = 1500 mV, but the real figure depends on the 5 V
+// rail and the part's own offset, so it is measured rather than assumed. A
+// reading far from ~1500 mV means the sensor or the divider is not connected.
+static uint32_t       currentZeroMv    = 0;
 
 // Accelerometer full scale. CHANGED 2026-07-30 from +/-16 g to +/-4 g.
 //
@@ -131,6 +173,10 @@ struct __attribute__((packed)) StatusPayload {
   uint16_t fifoOverruns;
   uint32_t txDropped;    // whole packets skipped bcs USB TX buffer was full
   uint8_t  ctrl1XL;      // CTRL1_XL read back from the sensor; host derives FS
+  int16_t  pwmDuty;      // duty actually applied right now, -255..255. The host
+                         // records this instead of trusting MOTOR_SPEED, and it
+                         // shows the kick and ramp as they happen.
+  int16_t  currentMa;    // motor current, milliamps, signed (direction matters)
 };
 
 static SemaphoreHandle_t serialMutex;
@@ -190,11 +236,48 @@ static void motorPinsSafe() {
   pinMode(MOTOR_LPWM, OUTPUT); digitalWrite(MOTOR_LPWM, LOW);
 }
 
+// Start-up shaping. rampEndsMs == 0 means "not starting up, hold runSpeed".
+static uint32_t kickEndsMs = 0;      // end of the full-duty kick
+static uint32_t rampEndsMs = 0;      // end of the ease-down
+static uint32_t lastRampMs = 0;      // throttles how often the duty is rewritten
+static int      runSpeed   = 0;      // duty to settle at
+
+// The duty actually being applied right now, shipped in every status packet so
+// the host records what the board is really doing rather than what the firmware
+// constant claims. Same reasoning as the CTRL1_XL readback above: a declared
+// constant is not evidence. Signed, -255..255.
+static volatile int16_t appliedDuty = 0;
+
+// Averaged ADC read in millivolts. analogReadMilliVolts applies the chip's
+// factory ADC calibration, so this is real millivolts rather than raw counts
+// that would need a per-board scale factor.
+static uint32_t readSenseMv() {
+  uint32_t acc = 0;
+  for (int i = 0; i < CURRENT_SAMPLES; i++) acc += analogReadMilliVolts(CURRENT_SENSE_PIN);
+  return acc / CURRENT_SAMPLES;
+}
+
+static int16_t readCurrentMa() {
+  const float mvPerA = ACS712_MV_PER_A * CURRENT_DIVIDER;    // ~39.6 mV/A at the pin
+  float ma = ((float)readSenseMv() - (float)currentZeroMv) / mvPerA * 1000.0f;
+  if (ma >  32000.0f) ma =  32000.0f;                        // keep it in int16
+  if (ma < -32000.0f) ma = -32000.0f;
+  return (int16_t)ma;
+}
+
+static void motorApply(int speed) {
+  if (speed >= 0) { analogWrite(MOTOR_LPWM, 0);     analogWrite(MOTOR_RPWM, speed);  }
+  else            { analogWrite(MOTOR_RPWM, 0);     analogWrite(MOTOR_LPWM, -speed); }
+  appliedDuty = (int16_t)speed;
+}
+
 static void motorKill(uint8_t code) {
+  kickEndsMs = rampEndsMs = 0;    // a kill mid-start-up must not be undone
   digitalWrite(MOTOR_R_EN, LOW);
   digitalWrite(MOTOR_L_EN, LOW);
   analogWrite(MOTOR_RPWM, 0);
   analogWrite(MOTOR_LPWM, 0);
+  appliedDuty = 0;
   // clamp the pads LOW in hardware so nothing short of a power cycle can re-enable the driver after a fault
   for (auto p : MOTOR_PINS) gpio_hold_en(p);
   motorRunning = false;
@@ -205,8 +288,17 @@ static void motorStart(int speed) {          // -255 to 255
   if (faultCode != FAULT_NONE) return;       // latched, no restart until reset
   digitalWrite(MOTOR_R_EN, HIGH);
   digitalWrite(MOTOR_L_EN, HIGH);
-  if (speed >= 0) { analogWrite(MOTOR_LPWM, 0);      analogWrite(MOTOR_RPWM, speed);  }
-  else            { analogWrite(MOTOR_RPWM, 0);      analogWrite(MOTOR_LPWM, -speed); }
+  runSpeed = speed;
+  if (abs(speed) < KICK_SPEED && (KICK_MS || RAMP_MS)) {
+    motorApply(speed >= 0 ? KICK_SPEED : -KICK_SPEED);
+    kickEndsMs = millis() + KICK_MS;
+    rampEndsMs = kickEndsMs + RAMP_MS;
+    lastRampMs = 0;
+    if (rampEndsMs == 0) rampEndsMs = 1;     // 0 is the "settled" sentinel
+  } else {
+    motorApply(speed);                       // already full duty, nothing to do
+    kickEndsMs = rampEndsMs = 0;
+  }
   motorRunning = true;
 }
 
@@ -416,6 +508,13 @@ void setup() {
 #endif
   esp_task_wdt_add(NULL);                      // loop() task
 
+  // 12 dB attenuation gives the full ~0-3.1 V span the divider can deliver.
+  // The default only reaches about 1 V, which would clip everything above ~1 A
+  // and look like a broken sensor. Zero is captured here, before the motor can
+  // possibly be running -- it cannot start until loop() arms it.
+  analogSetPinAttenuation(CURRENT_SENSE_PIN, ADC_11db);
+  currentZeroMv = readSenseMv();
+
   esp_reset_reason_t rr = esp_reset_reason();
   bool cleanBoot = (rr == ESP_RST_POWERON || rr == ESP_RST_SW ||
                     rr == ESP_RST_USB || rr == ESP_RST_UNKNOWN);
@@ -457,6 +556,23 @@ void loop() {
   if (!motorWasStarted && armRequested && tempProven && faultCode == FAULT_NONE) {
     motorStart(MOTOR_SPEED);
     motorWasStarted = true;
+  }
+
+  // Start-up shaping: full duty, then ease down to runSpeed. Driven from the
+  // loop rather than with delay() inside motorStart so the loop stays live --
+  // 'X' still stops the motor part-way through, and status packets keep going.
+  if (rampEndsMs && motorRunning) {
+    uint32_t now = millis();
+    if ((int32_t)(now - rampEndsMs) >= 0) {
+      motorApply(runSpeed);                        // settled
+      kickEndsMs = rampEndsMs = 0;
+    } else if ((int32_t)(now - kickEndsMs) >= 0 &&
+               (now - lastRampMs) >= 50) {         // 50 ms steps, not every pass
+      lastRampMs = now;
+      const int hi = (runSpeed >= 0) ? KICK_SPEED : -KICK_SPEED;
+      const uint32_t into = now - kickEndsMs;
+      motorApply(hi + (int)((int32_t)(runSpeed - hi) * (int32_t)into / (int32_t)RAMP_MS));
+    }
   }
 
   // 1 Hz (temperature + interlocks)
@@ -509,6 +625,8 @@ void loop() {
     s.fifoOverruns  = fifoOverrunCount;
     s.txDropped     = txDroppedPackets;
     s.ctrl1XL       = iisCtrl1XL;
+    s.pwmDuty       = appliedDuty;
+    s.currentMa     = readCurrentMa();
     sendPacket(PKT_STATUS, 0, seqStatus++, (const uint8_t *)&s, sizeof(s), 0);
   }
 

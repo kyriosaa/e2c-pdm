@@ -2843,7 +2843,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10K"
+		(property "Value" "10k"
 			(at 168.91 59.436 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2854,7 +2854,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
 			(at 167.64 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -3014,7 +3014,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_DIP:DIP-14_W7.62mm"
 			(at 44.45 144.78 0)
 			(hide yes)
 			(show_name no)
@@ -3342,9 +3342,9 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "3ed8652d-a446-4cf8-a929-303cf0db36c2")
+		(uuid "3c6a346d-93b8-4185-be69-612e12ccd866")
 		(property "Reference" "R9"
-			(at 162.56 79.502 90)
+			(at 162.56 75.692 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3353,17 +3353,17 @@
 				)
 			)
 		)
-		(property "Value" "100K"
-			(at 162.56 77.47 90)
+		(property "Value" "100k"
+			(at 162.56 79.502 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 0.762 0.762)
+					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
 			(at 162.56 77.47 0)
 			(hide yes)
 			(show_name no)
@@ -3397,10 +3397,10 @@
 			)
 		)
 		(pin "1"
-			(uuid "234e5abb-5bfa-475f-b708-534760d274c6")
+			(uuid "541f7c1d-3419-4390-b77a-cd7054a42487")
 		)
 		(pin "2"
-			(uuid "7fc6918e-8d8c-4d12-99aa-cdaee31dc949")
+			(uuid "36063603-3e88-4379-8216-41a93e423565")
 		)
 		(instances
 			(project "mdc"
@@ -3756,7 +3756,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm"
 			(at 90.17 144.78 0)
 			(hide yes)
 			(show_name no)
@@ -3778,7 +3778,7 @@
 				)
 			)
 		)
-		(property "Description" "Ceramic capacitor"
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 90.17 144.78 0)
 			(hide yes)
 			(show_name no)
@@ -3799,86 +3799,6 @@
 			(project "mdc"
 				(path "/813130ed-0e1e-452d-b14e-fae57783a961/8f2924e4-fc6a-4bbc-8379-4544cedaebc8"
 					(reference "C1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_Small")
-		(at 233.68 77.47 90)
-		(mirror x)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "6ab7c92e-352b-4ae9-9acd-f9c585c4e24e")
-		(property "Reference" "R11"
-			(at 233.68 79.502 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-			)
-		)
-		(property "Value" "100K"
-			(at 233.68 77.47 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 233.68 77.47 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 233.68 77.47 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
-			(at 233.68 77.47 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "c854b5dd-275a-441e-aad3-1c3ff533aedb")
-		)
-		(pin "2"
-			(uuid "fc84b0f8-fde3-41ca-be33-8ccefdd7472a")
-		)
-		(instances
-			(project "mdc"
-				(path "/813130ed-0e1e-452d-b14e-fae57783a961/8f2924e4-fc6a-4bbc-8379-4544cedaebc8"
-					(reference "R11")
 					(unit 1)
 				)
 			)
@@ -4022,7 +3942,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10K"
+		(property "Value" "10k"
 			(at 204.47 59.436 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4033,7 +3953,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
 			(at 203.2 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -4103,7 +4023,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10K"
+		(property "Value" "10k"
 			(at 240.03 59.436 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4114,7 +4034,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
 			(at 238.76 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -4279,6 +4199,86 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R_Small")
+		(at 198.12 77.47 90)
+		(mirror x)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "773e0461-91ba-4437-b978-aa30980ca9c6")
+		(property "Reference" "R10"
+			(at 198.12 75.692 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+			)
+		)
+		(property "Value" "100k"
+			(at 198.12 79.502 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 198.12 77.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 198.12 77.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor, small symbol"
+			(at 198.12 77.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "9ad6bb52-503e-4d1e-983e-d8a4c35fea2e")
+		)
+		(pin "2"
+			(uuid "e70ba799-331c-4793-961e-aa49679b36b7")
+		)
+		(instances
+			(project "mdc"
+				(path "/813130ed-0e1e-452d-b14e-fae57783a961/8f2924e4-fc6a-4bbc-8379-4544cedaebc8"
+					(reference "R10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector_Generic:Conn_01x06")
 		(at 195.58 109.22 0)
 		(unit 1)
@@ -4333,7 +4333,7 @@
 				)
 			)
 		)
-		(property "Description" "To IBT-2"
+		(property "Description" "Generic connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 198.374 113.03 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4384,7 +4384,7 @@
 		(dnp no)
 		(uuid "8a41182a-df03-4a78-a097-3449d9bcb7e2")
 		(property "Reference" "R8"
-			(at 127 79.502 90)
+			(at 127 75.692 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4393,17 +4393,17 @@
 				)
 			)
 		)
-		(property "Value" "100K"
-			(at 127 77.47 90)
+		(property "Value" "100k"
+			(at 127 79.502 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 0.762 0.762)
+					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
 			(at 127 77.47 0)
 			(hide yes)
 			(show_name no)
@@ -4524,86 +4524,6 @@
 			(project "mdc"
 				(path "/813130ed-0e1e-452d-b14e-fae57783a961/8f2924e4-fc6a-4bbc-8379-4544cedaebc8"
 					(reference "#PWR018")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_Small")
-		(at 198.12 77.47 90)
-		(mirror x)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "924d16ec-e71f-4690-bd5d-114c9cecfcc0")
-		(property "Reference" "R10"
-			(at 198.12 79.502 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-			)
-		)
-		(property "Value" "100K"
-			(at 198.12 77.47 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 198.12 77.47 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 198.12 77.47 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
-			(at 198.12 77.47 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "3e781dec-9059-4613-a21a-7b3f9e4e105e")
-		)
-		(pin "2"
-			(uuid "53c59e73-8007-442b-954f-c3849bef5320")
-		)
-		(instances
-			(project "mdc"
-				(path "/813130ed-0e1e-452d-b14e-fae57783a961/8f2924e4-fc6a-4bbc-8379-4544cedaebc8"
-					(reference "R10")
 					(unit 1)
 				)
 			)
@@ -5093,7 +5013,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_DIP:DIP-14_W7.62mm"
 			(at 63.5 144.78 0)
 			(hide yes)
 			(show_name no)
@@ -5127,46 +5047,46 @@
 			)
 		)
 		(pin "7"
-			(uuid "f20544a4-1388-4e27-bde4-15a6ad52a533")
+			(uuid "f20544a4-1388-4e27-bde4-15a6ad52a534")
 		)
 		(pin "12"
-			(uuid "8e136bc6-db81-4c52-8852-6ee4e7f947c1")
+			(uuid "8e136bc6-db81-4c52-8852-6ee4e7f947c2")
 		)
 		(pin "8"
-			(uuid "d0f8bbe4-28c3-42d1-b0b9-a8b668eb502d")
+			(uuid "d0f8bbe4-28c3-42d1-b0b9-a8b668eb502e")
 		)
 		(pin "6"
-			(uuid "7ecd41be-f73e-4005-bb0d-65030eb14173")
+			(uuid "7ecd41be-f73e-4005-bb0d-65030eb14174")
 		)
 		(pin "4"
-			(uuid "5ee9383e-fa92-448b-af78-567419857108")
+			(uuid "5ee9383e-fa92-448b-af78-567419857109")
 		)
 		(pin "10"
-			(uuid "84e51a36-ef93-4a07-8cac-2060896c3dee")
+			(uuid "84e51a36-ef93-4a07-8cac-2060896c3def")
 		)
 		(pin "3"
-			(uuid "289a84c0-204a-4ec4-afb6-a6e947ac6e0a")
+			(uuid "289a84c0-204a-4ec4-afb6-a6e947ac6e0b")
 		)
 		(pin "9"
-			(uuid "9712a7c9-f29f-4190-b55e-6bf4c814faf3")
+			(uuid "9712a7c9-f29f-4190-b55e-6bf4c814faf4")
 		)
 		(pin "1"
-			(uuid "a1cb3c79-e4f2-498e-9d16-2721985984b9")
+			(uuid "a1cb3c79-e4f2-498e-9d16-2721985984ba")
 		)
 		(pin "13"
-			(uuid "27d17813-a88b-4e4d-802d-15a615738218")
+			(uuid "27d17813-a88b-4e4d-802d-15a615738219")
 		)
 		(pin "14"
-			(uuid "7e83d7a4-7c80-4e19-a2cd-8b909f9e19bf")
+			(uuid "7e83d7a4-7c80-4e19-a2cd-8b909f9e19c0")
 		)
 		(pin "11"
-			(uuid "0cf82159-0395-46e7-981b-fdef3a594aa6")
+			(uuid "0cf82159-0395-46e7-981b-fdef3a594aa7")
 		)
 		(pin "2"
-			(uuid "cfe1e00d-3a3b-4b3e-9fc7-c23e20aedee9")
+			(uuid "cfe1e00d-3a3b-4b3e-9fc7-c23e20aedeea")
 		)
 		(pin "5"
-			(uuid "6c26e23d-8456-497f-874b-1989ff9b13e4")
+			(uuid "6c26e23d-8456-497f-874b-1989ff9b13e5")
 		)
 		(instances
 			(project "mdc"
@@ -5480,7 +5400,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10K"
+		(property "Value" "10k"
 			(at 133.35 59.436 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5491,7 +5411,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
 			(at 132.08 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -5534,6 +5454,86 @@
 			(project "mdc"
 				(path "/813130ed-0e1e-452d-b14e-fae57783a961/8f2924e4-fc6a-4bbc-8379-4544cedaebc8"
 					(reference "R1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R_Small")
+		(at 233.68 77.47 90)
+		(mirror x)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "ddd66c7b-5b56-4776-960b-fa83b65bc085")
+		(property "Reference" "R11"
+			(at 233.68 75.692 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+			)
+		)
+		(property "Value" "100k"
+			(at 233.68 79.502 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 233.68 77.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 233.68 77.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor, small symbol"
+			(at 233.68 77.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "a464164e-6b7b-4afe-9d82-3840be0db6a0")
+		)
+		(pin "2"
+			(uuid "46b9c63e-2246-45a1-9e05-f3a1c40f8f0d")
+		)
+		(instances
+			(project "mdc"
+				(path "/813130ed-0e1e-452d-b14e-fae57783a961/8f2924e4-fc6a-4bbc-8379-4544cedaebc8"
+					(reference "R11")
 					(unit 1)
 				)
 			)

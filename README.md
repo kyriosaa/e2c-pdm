@@ -41,7 +41,7 @@ claim; that claim applies to the Pi→cloud tier only.
 
 ```
 edge/
-  esp32/firmware/edge_asset_monitor/   acquisition + safety firmware
+  esp32/firmware/mdc/                  acquisition + safety firmware
   esp32/tools/                         data_catcher.py (host logger), notifier, start_handler
   hardware/edge_asset_monitor_2L/      2-layer PCB, lab-etched (KiCad)
   hardware/edge_asset_monitor_4L/      4-layer PCB + gerbers (KiCad)
@@ -88,7 +88,7 @@ Requires the physical rig. Read
 [overnight_acquisition_rig.md](docs/notes/overnight_acquisition_rig.md) §3
 before running unattended.
 
-1. Flash `edge/esp32/firmware/edge_asset_monitor/` to the ESP32-S3.
+1. Flash `edge/esp32/firmware/mdc/` to the ESP32-S3.
    **Never flash with the 24 V rail energised.** Power sequence: USB first, 24 V
    last; de-energise 24 V first.
 2. Set the run parameters and provenance fields at the top of

@@ -128,11 +128,40 @@ def save_manifest(dest, manifest):
     os.replace(tmp, path)
 
 
+def session_path(root, name):
+    """Where a session named `name` actually lives under `root`.
+
+    Sessions sit either directly under data/raw or one level down in a grouping
+    folder (data/raw/24V/ holds the sessions from the retired motor). The bare
+    name stays the identity everywhere else -- manifest keys and destination
+    directories stay flat, so a drive exported before the grouping still
+    verifies and does not re-copy.
+    """
+    direct = os.path.join(root, name)
+    if os.path.isdir(direct):
+        return direct
+    for group in sorted(os.listdir(root)):
+        nested = os.path.join(root, group, name)
+        if os.path.isdir(nested):
+            return nested
+    return direct
+
+
 def discover(root, only, skip_tests):
     if not os.path.isdir(root):
         sys.exit(f'no such directory: {root}')
-    names = sorted(d for d in os.listdir(root)
-                   if os.path.isdir(os.path.join(root, d)))
+    names = []
+    for d in sorted(os.listdir(root)):
+        p = os.path.join(root, d)
+        if not os.path.isdir(p):
+            continue
+        if os.path.isfile(os.path.join(p, 'session.json')):
+            names.append(d)
+        else:
+            # a grouping folder: take the sessions inside it, by bare name
+            names.extend(sorted(s for s in os.listdir(p)
+                                if os.path.isfile(os.path.join(p, s, 'session.json'))))
+    names = sorted(names)
     if only:
         missing = [n for n in only if n not in names]
         if missing:
@@ -189,7 +218,7 @@ def export(root, dest, names, manifest, recheck):
 
     plan = []
     for name in names:
-        sdir = os.path.join(root, name)
+        sdir = session_path(root, name)
         missing = [f for f in REQUIRED if not os.path.isfile(os.path.join(sdir, f))]
         if missing:
             print(f'  skip {name}: incomplete ({", ".join(missing)})')

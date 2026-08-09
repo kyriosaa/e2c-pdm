@@ -1,0 +1,15 @@
+# Raspberry Pi edge twin: pi_edge_twin.py
+#
+#   pip install -r edge/rpi/requirements.txt
+
+# MQTT subscriber.
+# 2.0 or newer is required, not merely preferred: pi_edge_twin.py constructs the
+# client with mqtt.CallbackAPIVersion.VERSION2 and its on_connect takes the
+# 5-argument (reason_code, properties) form. Both are 2.x API -- on paho-mqtt
+# 1.x the enum does not exist and the callback signature is wrong.
+paho-mqtt>=2.0
+
+# InfluxDB v3 write client. The distribution is "influxdb3-python"; it imports
+# as `influxdb_client_3`. Do not install "influxdb-client", which is the v2
+# client and a different API.
+influxdb3-python>=0.9

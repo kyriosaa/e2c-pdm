@@ -1248,7 +1248,7 @@
 				)
 			)
 		)
-		(property "Description" "Generator"
+		(property "Description" "DC Motor"
 			(at 118.872 106.68 0)
 			(show_name no)
 			(do_not_autoplace no)
