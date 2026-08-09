@@ -2,7 +2,7 @@
 # 
 # streams:
 #   type 0 VIB    payload = N * (int16 x, int16 y, int16 z)  raw counts
-#                 scale depends on ACCEL_FS_G below (must match firmware):
+#                 scale depends on ACCEL_FS_G in config.py (must match firmware):
 #                   +/-4 g  -> 0.122 mg/LSB   (current)
 #                   +/-16 g -> 0.488 mg/LSB   (pilot sessions 2026-07-16..19)
 #                 g = raw * ACCEL_FS_G / 32768 ;  m/s^2 = g * 9.80665
@@ -30,6 +30,12 @@ import os
 import wave
 from datetime import datetime
 
+# every knob for this rig lives in config.py -- edit that, not this file
+from config import (SERIAL_PORT, BAUD_RATE, RAW_ROOT, SESSION_LABEL,
+                    RUN_SECONDS, ARM_DELAY_S, ACCEL_FS_G, VIB_ODR_NOMINAL_HZ,
+                    AUDIO_SR_HZ, MOTOR_VOLTAGE_V, MECHANICAL_LOAD,
+                    FAULT_CONDITION, ROOM_CONDITION, NOTES)
+
 if hasattr(signal, 'SIGBREAK'):
     def _sigbreak_to_kbint(_sig, _frame):
         raise KeyboardInterrupt
@@ -47,65 +53,6 @@ except ImportError:
     class notifier:  # phone alerts will be silently disabled if notifier.py is missing 
         motor_started = motor_stopped = fault = session_summary = \
             staticmethod(lambda *a, **k: None)
-
-SERIAL_PORT   = 'COM3'
-BAUD_RATE     = 3000000
-SESSION_LABEL = 'healthy24V_motor_baseline'
-# SESSION_LABEL = 'test'
-RUN_SECONDS   = int(2 * 3600)       # 2hr run -- short enough that a cell sits
-                                    # inside one ambient condition. A 6 h run
-                                    # started in the evening ends in the small
-                                    # hours and spans both.
-ARM_DELAY_S   = 60                  # 60s wait time before motor starts running
-# anchored to this file so recordings land in data/raw regardless of cwd
-SAVE_ROOT     = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                             '..', '..', '..', 'data', 'raw')
-
-# ---------------------------------------------------------------------------
-# Acquisition provenance written into session.json
-# ---------------------------------------------------------------------------
-# MUST match ACCEL_FS_G / IIS3DWB_CTRL1_XL_VAL in the firmware. Recorded per
-# session so analysis code can scale each session correctly instead of
-# hardcoding a full scale that silently goes stale when the register changes.
-# The six pilot sessions of 2026-07-16..20 predate this field and were
-# recorded at +/-16 g; ml/sessions.py falls back for those by start timestamp.
-#
-# This is the DECLARED value. Since 2026-08-04 the firmware reads CTRL1_XL back
-# and ships it in every status packet, and session.json records that instead;
-# this constant now serves as the cross-check that aborts the run when the two
-# disagree. The 2026-08-01..02 sessions are why: they declare +/-4 g and were
-# recorded at +/-16 g, because this file was edited and the board was not
-# reflashed. A declared constant is not evidence of anything.
-ACCEL_FS_G    = 4.0
-VIB_ODR_NOMINAL_HZ = 26667.0        # IIS3DWB datasheet nominal
-AUDIO_SR_HZ   = 16000
-
-# Free-text notes that belong with the recording rather than in a lab notebook.
-# Fill these in before each run -- they end up in session.json and are the only
-# record of the physical setup.
-MOTOR_VOLTAGE_V = 24.0
-MECHANICAL_LOAD = 'none'            # e.g. 'none', 'eddy_brake_gap8mm'
-                                    # record the magnet gap -- it IS the load
-                                    # setting. NOT a flywheel: pure inertia adds
-                                    # no steady-state torque.
-FAULT_CONDITION = 'healthy'         # e.g. 'healthy', 'imbalance_l1', 'bearing_worn'
-ROOM_CONDITION  = 'unlabelled'      # quiet | noise | unlabelled
-NOTES           = ''
-
-# Fixed vocabulary, not free text. It has already drifted once -- the first
-# provenanced sessions were written 'quiet_night'/'noisy_day_hvac' and the
-# vocabulary settled on 'quiet'/'noise' on 2026-08-04. session.json is the
-# authoritative label, so a typo here is a mislabelled session that nobody
-# notices until analysis. To add a level, add it here deliberately.
-#
-# 'unlabelled' is the default and is deliberate: back-to-back auto runs cross
-# ambient conditions on their own schedule, so the room is judged per session
-# afterwards rather than asserted up front. It reads as "pending", which an
-# empty string does not -- that reads as "forgot".
-ROOM_CONDITIONS = ('quiet', 'noise', 'unlabelled')
-if ROOM_CONDITION not in ROOM_CONDITIONS:
-    raise SystemExit(f'ROOM_CONDITION={ROOM_CONDITION!r} is not one of '
-                     f'{ROOM_CONDITIONS} -- fix it before recording.')
 
 MAGIC        = 0xA55A
 HDR_FMT      = '<HBBIHH'          # magic, type, flags, seq, payloadLen, dropped
@@ -175,7 +122,7 @@ stamp = started_at.strftime('%Y%m%d_%H%M%S')
 # operating_point() keys on the first '_'-separated field, so the label has to
 # stay first. Overnight runs start one day and end the next -- this is the start.
 session_dir = os.path.join(
-    SAVE_ROOT, f'{SESSION_LABEL}_{stamp}_{started_at.strftime("%a")}')
+    RAW_ROOT, f'{SESSION_LABEL}_{stamp}_{started_at.strftime("%a")}')
 os.makedirs(session_dir, exist_ok=True)
 
 vib_file = open(os.path.join(session_dir, 'vibration.bin'), 'wb')
@@ -324,7 +271,7 @@ def handle_packet(ptype, flags, seq, dropped, payload, host_time):
             if fs_reported != ACCEL_FS_G and not stats.get('_fs_mismatch'):
                 stats['_fs_mismatch'] = True
                 print(f"{C['RED']}!! FULL-SCALE MISMATCH — aborting before arm.\n"
-                      f"   data_catcher.py ACCEL_FS_G = +/-{ACCEL_FS_G:g} g\n"
+                      f"   config.py ACCEL_FS_G = +/-{ACCEL_FS_G:g} g\n"
                       f"   sensor CTRL1_XL = 0x{ctrl1:02X} -> +/-{fs_reported:g} g\n"
                       f"   The board is not running the firmware you think it is. "
                       f"Reflash, then re-run.{C['RESET']}")

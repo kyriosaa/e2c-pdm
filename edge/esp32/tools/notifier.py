@@ -38,7 +38,8 @@ except ImportError:
     EMAIL_ADDRESS = ''
     SMTP_APP_PASSWORD = ''
 
-TIMEOUT_S         = 15
+from config import SMTP_TIMEOUT_S as TIMEOUT_S
+
 _warned_unconfigured = False
 
 # fault codes that are intentional endings, not real faults
