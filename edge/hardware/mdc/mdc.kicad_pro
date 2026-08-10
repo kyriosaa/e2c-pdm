@@ -146,7 +146,7 @@
       },
       "rules": {
         "max_error": 0.005,
-        "min_clearance": 0.75,
+        "min_clearance": 0.5,
         "min_connection": 0.0,
         "min_copper_edge_clearance": 0.8,
         "min_groove_width": 0.0,
@@ -160,7 +160,7 @@
         "min_text_thickness": 0.08,
         "min_through_hole_diameter": 0.8,
         "min_track_width": 0.75,
-        "min_via_annular_width": 0.8,
+        "min_via_annular_width": 0.4,
         "min_via_diameter": 2.5,
         "solder_mask_to_copper_clearance": 0.0,
         "use_height_for_length_calcs": true
@@ -541,7 +541,7 @@
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 0,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 3.0,
+        "track_width": 1.5,
         "tuning_profile": "",
         "via_diameter": 2.5,
         "via_drill": 1.0
@@ -626,7 +626,7 @@
     "last_paths": {
       "idf": "",
       "netlist": "",
-      "plot": "D:/projects/e2c-pdm/edge/hardware/edge_asset_monitor_2L/prints/rev2.0/",
+      "plot": "D:/projects/e2c-pdm/docs/layouts/rev3.0/",
       "specctra_dsn": "",
       "vrml": ""
     },
@@ -750,7 +750,7 @@
         "uuid": "813130ed-0e1e-452d-b14e-fae57783a961"
       }
     ],
-    "used_designators": "#PWR28,#FLG4",
+    "used_designators": "",
     "variants": []
   },
   "sheets": [

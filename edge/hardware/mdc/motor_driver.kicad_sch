@@ -6,7 +6,7 @@
 	(paper "A4")
 	(title_block
 		(title "Motor Driver")
-		(date "2026-08-09")
+		(date "2026-08-10")
 		(rev "3.0")
 		(comment 1 "Department of EECS- AIoT and Energy Management Lab")
 		(comment 2 "National Taipei University of Technology 國立臺北科技大學")
@@ -1798,12 +1798,12 @@
 		(uuid "f575312b-0f21-4577-a7a8-49fb7fc0882b")
 	)
 	(no_connect
-		(at 44.45 137.16)
-		(uuid "66543a1c-d3fe-404f-94f3-3a39e180d70a")
+		(at 59.69 144.78)
+		(uuid "125bb58f-d79b-4a92-b36d-8d669808e771")
 	)
 	(no_connect
-		(at 63.5 137.16)
-		(uuid "8c14a59b-4c22-497d-8c48-44debde1a702")
+		(at 36.83 144.78)
+		(uuid "2ce51e26-bea1-4f8c-9cab-4474725e0dae")
 	)
 	(wire
 		(pts
@@ -1904,6 +1904,16 @@
 			(type default)
 		)
 		(uuid "507e23bc-a81c-4a4c-b9d9-22d182d0b86b")
+	)
+	(wire
+		(pts
+			(xy 74.93 144.78) (xy 74.93 147.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "50a34ce8-c4b0-4c5e-b5dc-00d2804a4595")
 	)
 	(wire
 		(pts
@@ -2034,6 +2044,16 @@
 			(type default)
 		)
 		(uuid "84b300de-a5e4-4922-9c46-ce60dc0e81c2")
+	)
+	(wire
+		(pts
+			(xy 52.07 144.78) (xy 52.07 147.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8e7eb786-5484-4d03-8979-3f4290188efd")
 	)
 	(wire
 		(pts
@@ -2843,7 +2863,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10k"
+		(property "Value" "2.2k"
 			(at 168.91 59.436 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2982,7 +3002,7 @@
 	)
 	(symbol
 		(lib_id "74xx:74HC04")
-		(at 44.45 144.78 90)
+		(at 44.45 144.78 0)
 		(unit 5)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2993,25 +3013,23 @@
 		(fields_autoplaced yes)
 		(uuid "22c42828-843d-4997-8569-85a9a065ed71")
 		(property "Reference" "U5"
-			(at 49.53 143.5099 90)
+			(at 44.45 135.89 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
 			)
 		)
 		(property "Value" "74HC04"
-			(at 49.53 146.0499 90)
+			(at 44.45 138.43 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
 			)
 		)
 		(property "Footprint" "Package_DIP:DIP-14_W7.62mm"
@@ -3413,84 +3431,6 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 63.5 152.4 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "4dc43b19-9f00-46f1-9b93-a71ce9383279")
-		(property "Reference" "#PWR025"
-			(at 63.5 158.75 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 63.5 157.48 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 63.5 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 63.5 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 63.5 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "f3797e2d-ef22-4678-a50b-510756be6bae")
-		)
-		(instances
-			(project "mdc"
-				(path "/813130ed-0e1e-452d-b14e-fae57783a961/8f2924e4-fc6a-4bbc-8379-4544cedaebc8"
-					(reference "#PWR025")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
 		(at 238.76 77.47 0)
 		(unit 1)
 		(body_style 1)
@@ -3723,6 +3663,84 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 52.07 147.32 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "68c85347-bce7-4d63-8eb9-4a082f45058a")
+		(property "Reference" "#PWR025"
+			(at 52.07 153.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 52.07 152.4 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 52.07 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 52.07 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 52.07 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "282afceb-43ef-42b5-a229-7253ae773ab9")
+		)
+		(instances
+			(project "mdc"
+				(path "/813130ed-0e1e-452d-b14e-fae57783a961/8f2924e4-fc6a-4bbc-8379-4544cedaebc8"
+					(reference "#PWR025")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C_Small")
 		(at 90.17 144.78 0)
 		(mirror y)
@@ -3942,7 +3960,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10k"
+		(property "Value" "2.2k"
 			(at 204.47 59.436 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4023,7 +4041,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10k"
+		(property "Value" "2.2k"
 			(at 240.03 59.436 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4333,7 +4351,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Description" "To IBT_2"
 			(at 198.374 113.03 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4902,86 +4920,8 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 44.45 152.4 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b8c1b2a0-77b9-4a50-b10c-21f727d44947")
-		(property "Reference" "#PWR026"
-			(at 44.45 158.75 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 44.45 157.48 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 44.45 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 44.45 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 44.45 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "b81321cd-dbe3-4930-a857-3ed323c469eb")
-		)
-		(instances
-			(project "mdc"
-				(path "/813130ed-0e1e-452d-b14e-fae57783a961/8f2924e4-fc6a-4bbc-8379-4544cedaebc8"
-					(reference "#PWR026")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "74xx:74HC04")
-		(at 63.5 144.78 90)
+		(at 67.31 144.78 0)
 		(unit 6)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4992,29 +4932,27 @@
 		(fields_autoplaced yes)
 		(uuid "c5d36485-295a-41ec-ad9f-3c607110e0aa")
 		(property "Reference" "U5"
-			(at 68.58 143.5099 90)
+			(at 67.31 135.89 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
 			)
 		)
 		(property "Value" "74HC04"
-			(at 68.58 146.0499 90)
+			(at 67.31 138.43 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
 			)
 		)
 		(property "Footprint" "Package_DIP:DIP-14_W7.62mm"
-			(at 63.5 144.78 0)
+			(at 67.31 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5025,7 +4963,7 @@
 			)
 		)
 		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf"
-			(at 63.5 144.78 0)
+			(at 67.31 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5036,7 +4974,7 @@
 			)
 		)
 		(property "Description" "Hex Inverter"
-			(at 63.5 144.78 0)
+			(at 67.31 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5400,7 +5338,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10k"
+		(property "Value" "2.2k"
 			(at 133.35 59.436 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5856,6 +5794,84 @@
 			(project "mdc"
 				(path "/813130ed-0e1e-452d-b14e-fae57783a961/8f2924e4-fc6a-4bbc-8379-4544cedaebc8"
 					(reference "#PWR012")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 74.93 147.32 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fb8462e6-1c28-4de0-86c1-b0e629585a01")
+		(property "Reference" "#PWR026"
+			(at 74.93 153.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 74.93 152.4 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 74.93 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 74.93 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 74.93 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "bb8002d7-7cc4-45cd-998e-a88543cb0cac")
+		)
+		(instances
+			(project "mdc"
+				(path "/813130ed-0e1e-452d-b14e-fae57783a961/8f2924e4-fc6a-4bbc-8379-4544cedaebc8"
+					(reference "#PWR026")
 					(unit 1)
 				)
 			)

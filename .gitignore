@@ -28,6 +28,7 @@ docs/notes/
 # KiCad
 **/.history
 edge/hardware/mdc/mdc-backups
+edge/hardware/mdc/_restore_backup_*
 edge/hardware/edge_asset_monitor_4L/edge_asset_monitor_4L-backups
 ~*.kicad_*.lck
 *.kicad_pcb-bak
