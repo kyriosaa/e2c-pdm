@@ -1,0 +1,21 @@
+# E2C-PDM dependencies, all of them.
+#
+# The three tiers run on three different machines and do NOT want each other's
+# packages, so each has its own file and this one only points at them:
+#
+#   rig host  (records)   pip install -r edge/esp32/tools/requirements.txt
+#   raspi     (twin)      pip install -r edge/rpi/requirements.txt
+#   analysis  (trains)    pip install -r ml/requirements.txt
+#
+# Install those directly. Installing THIS file puts all three tiers in one
+# environment, which mostly means dragging TensorFlow (~600 MB, and no Python
+# 3.14 wheels) onto a machine whose only job is to read a serial port. It is
+# here so `pip install -r requirements.txt` works and so there is one place that
+# lists everything, not because it is the normal path.
+#
+# ml/requirements.txt documents a further split: the feature pipeline runs on
+# any Python, but training needs 3.12 because TensorFlow has no 3.14 wheels.
+
+-r edge/esp32/tools/requirements.txt
+-r edge/rpi/requirements.txt
+-r ml/requirements.txt

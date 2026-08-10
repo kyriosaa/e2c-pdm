@@ -6,7 +6,7 @@
 	(paper "A4")
 	(title_block
 		(title "Generator Load")
-		(date "2026-08-09")
+		(date "2026-08-10")
 		(rev "3.0")
 		(company "Components not part of PCB layout")
 		(comment 1 "Department of EECS- AIoT and Energy Management Lab")
@@ -15,194 +15,6 @@
 		(comment 4 "Student: Purit Hongjirakul 黃子奇")
 	)
 	(lib_symbols
-		(symbol "Device:D"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 1.016)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "D"
-				(at 0 2.54 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "D"
-				(at 0 -2.54 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "Diode"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Sim.Device" "D"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Sim.Pins" "1=K 2=A"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_keywords" "diode"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_fp_filters" "TO-???* *_Diode_* *SingleDiode* D_*"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "D_0_1"
-				(polyline
-					(pts
-						(xy -1.27 1.27) (xy -1.27 -1.27)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 1.27) (xy 1.27 -1.27) (xy -1.27 0) (xy 1.27 1.27)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 0) (xy -1.27 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "D_1_1"
-				(pin passive line
-					(at -3.81 0 0)
-					(length 2.54)
-					(name "K"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 3.81 0 180)
-					(length 2.54)
-					(name "A"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Device:R"
 			(pin_numbers
 				(hide yes)
@@ -938,22 +750,10 @@
 		(uuid "278b43de-99ba-4da1-8784-688bcf40fde7")
 	)
 	(junction
-		(at 132.08 110.49)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "89ba360b-4039-40d5-9999-aa8b8c645cfc")
-	)
-	(junction
 		(at 167.64 97.79)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "8cdd97dc-4b87-4175-b699-b67e87afefe2")
-	)
-	(junction
-		(at 132.08 97.79)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "90f78991-a105-4849-a400-996e07d0f967")
 	)
 	(no_connect
 		(at 153.67 92.71)
@@ -975,23 +775,13 @@
 	)
 	(wire
 		(pts
-			(xy 123.19 97.79) (xy 132.08 97.79)
+			(xy 123.19 97.79) (xy 138.43 97.79)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "0fdc9555-7bb6-4809-a10a-6fea1c15b283")
-	)
-	(wire
-		(pts
-			(xy 132.08 107.95) (xy 132.08 110.49)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "187cb670-02b5-405a-8c94-b09504212479")
 	)
 	(wire
 		(pts
@@ -1045,33 +835,13 @@
 	)
 	(wire
 		(pts
-			(xy 123.19 110.49) (xy 132.08 110.49)
+			(xy 123.19 110.49) (xy 167.64 110.49)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "6988256d-28b3-4a9f-93df-7b9efba03da9")
-	)
-	(wire
-		(pts
-			(xy 132.08 110.49) (xy 167.64 110.49)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8772420d-9104-4aa9-b8d7-122240eaabb9")
-	)
-	(wire
-		(pts
-			(xy 132.08 97.79) (xy 138.43 97.79)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8889296e-7c01-4c03-bdf5-5e1057220f8f")
 	)
 	(wire
 		(pts
@@ -1102,16 +872,6 @@
 			(type default)
 		)
 		(uuid "c635ec5c-5cd5-4fd8-abfb-82acf97111b8")
-	)
-	(wire
-		(pts
-			(xy 132.08 97.79) (xy 132.08 100.33)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ce7c3a3d-616b-4821-9d58-c9822f88e7cb")
 	)
 	(symbol
 		(lib_id "Device:R")
@@ -1248,7 +1008,7 @@
 				)
 			)
 		)
-		(property "Description" "Generator"
+		(property "Description" "DC Motor"
 			(at 118.872 106.68 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1269,110 +1029,6 @@
 			(project "mdc"
 				(path "/813130ed-0e1e-452d-b14e-fae57783a961/7a2822f0-8a73-4068-9237-8ac59dd9220e"
 					(reference "M1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:D")
-		(at 132.08 104.14 90)
-		(mirror x)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board no)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "773cee15-1a75-4e60-a3b7-37f356f6590a")
-		(property "Reference" "D1"
-			(at 133.604 104.902 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "D"
-			(at 133.604 103.1241 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 132.08 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 132.08 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Diode"
-			(at 132.08 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Device" "D"
-			(at 132.08 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Pins" "1=K 2=A"
-			(at 132.08 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "b40856c7-bcfe-45d4-9d9e-85805082b703")
-		)
-		(pin "2"
-			(uuid "566ce363-2192-4fc2-a0eb-3267c4a02d3e")
-		)
-		(instances
-			(project "mdc"
-				(path "/813130ed-0e1e-452d-b14e-fae57783a961/7a2822f0-8a73-4068-9237-8ac59dd9220e"
-					(reference "D1")
 					(unit 1)
 				)
 			)

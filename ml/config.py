@@ -42,15 +42,38 @@ def session_dir(name: str | None = None) -> Path:
     p = Path(name)
     if p.is_absolute() or p.exists():
         return p
-    return RAW_DIR / name
+    direct = RAW_DIR / name
+    if direct.exists() or not RAW_DIR.exists():
+        return direct
+    # Sessions may be filed one level down in a grouping folder. data/raw/24V/
+    # holds the sessions from the motor retired on 2026-08-09. Bare names keep
+    # working so nothing that stored a session name has to be rewritten.
+    for group in RAW_DIR.iterdir():
+        if group.is_dir() and (group / name).exists():
+            return group / name
+    return direct               # unchanged: report the path we expected
 
 
 def all_sessions() -> list[Path]:
-    """Every recorded session directory under data/raw, sorted by name."""
+    """Every recorded session directory under data/raw, sorted by name.
+
+    Looks one level down as well, so sessions grouped into a folder still count.
+    A session is a directory holding session.json; a grouping folder is not, so
+    the two can never be confused. Sorted by directory NAME, not by path, so
+    grouping a session does not move it in the ordering.
+    """
     if not RAW_DIR.exists():
         return []
-    return sorted(d for d in RAW_DIR.iterdir()
-                  if d.is_dir() and (d / SESSION_JSON).exists())
+    found = []
+    for d in RAW_DIR.iterdir():
+        if not d.is_dir():
+            continue
+        if (d / SESSION_JSON).exists():
+            found.append(d)
+        else:
+            found.extend(s for s in d.iterdir()
+                         if s.is_dir() and (s / SESSION_JSON).exists())
+    return sorted(found, key=lambda p: p.name)
 
 
 # ---------------------------------------------------------------------------

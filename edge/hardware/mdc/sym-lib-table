@@ -4,5 +4,5 @@
 	(lib (name "ESP32-S3-DEVKITC-1-N16R8V") (type "KiCad") (uri "${KIPRJMOD}/ESP32-S3-DEVKITC-1-N16R8V/ESP32-S3-DEVKITC-1-N16R8V.kicad_sym") (options "") (descr ""))
 	(lib (name "GY-906") (type "KiCad") (uri "${KIPRJMOD}/GY-906/GY-906.kicad_sym") (options "") (descr ""))
 	(lib (name "INMP441") (type "KiCad") (uri "${KIPRJMOD}/INMP441/INMP441.kicad_sym") (options "") (descr ""))
-	(lib (name "INA219_breakout") (type "KiCad") (uri "${KIPRJMOD}/INA219_breakout/INA219_breakout.kicad_sym") (options "") (descr ""))
+	(lib (name "ACS712_breakout") (type "KiCad") (uri "${KIPRJMOD}/ACS712_breakout/ACS712_breakout.kicad_sym") (options "") (descr ""))
 )

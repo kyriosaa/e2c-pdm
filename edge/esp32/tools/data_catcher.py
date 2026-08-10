@@ -2,7 +2,7 @@
 # 
 # streams:
 #   type 0 VIB    payload = N * (int16 x, int16 y, int16 z)  raw counts
-#                 scale depends on ACCEL_FS_G below (must match firmware):
+#                 scale depends on ACCEL_FS_G in config.py (must match firmware):
 #                   +/-4 g  -> 0.122 mg/LSB   (current)
 #                   +/-16 g -> 0.488 mg/LSB   (pilot sessions 2026-07-16..19)
 #                 g = raw * ACCEL_FS_G / 32768 ;  m/s^2 = g * 9.80665
@@ -30,16 +30,16 @@ import os
 import wave
 from datetime import datetime
 
+# every knob for this rig lives in config.py -- edit that, not this file
+from config import (SERIAL_PORT, BAUD_RATE, RAW_ROOT, SESSION_LABEL,
+                    RUN_SECONDS, ARM_DELAY_S, ACCEL_FS_G, VIB_ODR_NOMINAL_HZ,
+                    AUDIO_SR_HZ, MOTOR_VOLTAGE_V, MECHANICAL_LOAD,
+                    FAULT_CONDITION, ROOM_CONDITION, NOTES, COLOR as C)
+
 if hasattr(signal, 'SIGBREAK'):
     def _sigbreak_to_kbint(_sig, _frame):
         raise KeyboardInterrupt
     signal.signal(signal.SIGBREAK, _sigbreak_to_kbint)
-
-try:
-    from private import COLOR as C
-except ImportError:
-    C = {k: '' for k in ('RED', 'GREEN', 'BLUE', 'WHITE', 'YELLOW',
-                         'MAGENTA', 'CYAN', 'GRAY', 'ORANGE', 'RESET')}
 
 try:
     import notifier
@@ -48,74 +48,21 @@ except ImportError:
         motor_started = motor_stopped = fault = session_summary = \
             staticmethod(lambda *a, **k: None)
 
-SERIAL_PORT   = 'COM3'
-BAUD_RATE     = 3000000
-SESSION_LABEL = 'healthy24V_motor_baseline'
-# SESSION_LABEL = 'test'
-RUN_SECONDS   = int(2 * 3600)       # 2hr run -- short enough that a cell sits
-                                    # inside one ambient condition. A 6 h run
-                                    # started in the evening ends in the small
-                                    # hours and spans both.
-ARM_DELAY_S   = 60                  # 60s wait time before motor starts running
-# anchored to this file so recordings land in data/raw regardless of cwd
-SAVE_ROOT     = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                             '..', '..', '..', 'data', 'raw')
-
-# ---------------------------------------------------------------------------
-# Acquisition provenance written into session.json
-# ---------------------------------------------------------------------------
-# MUST match ACCEL_FS_G / IIS3DWB_CTRL1_XL_VAL in the firmware. Recorded per
-# session so analysis code can scale each session correctly instead of
-# hardcoding a full scale that silently goes stale when the register changes.
-# The six pilot sessions of 2026-07-16..20 predate this field and were
-# recorded at +/-16 g; ml/sessions.py falls back for those by start timestamp.
-#
-# This is the DECLARED value. Since 2026-08-04 the firmware reads CTRL1_XL back
-# and ships it in every status packet, and session.json records that instead;
-# this constant now serves as the cross-check that aborts the run when the two
-# disagree. The 2026-08-01..02 sessions are why: they declare +/-4 g and were
-# recorded at +/-16 g, because this file was edited and the board was not
-# reflashed. A declared constant is not evidence of anything.
-ACCEL_FS_G    = 4.0
-VIB_ODR_NOMINAL_HZ = 26667.0        # IIS3DWB datasheet nominal
-AUDIO_SR_HZ   = 16000
-
-# Free-text notes that belong with the recording rather than in a lab notebook.
-# Fill these in before each run -- they end up in session.json and are the only
-# record of the physical setup.
-MOTOR_VOLTAGE_V = 24.0
-MECHANICAL_LOAD = 'none'            # e.g. 'none', 'eddy_brake_gap8mm'
-                                    # record the magnet gap -- it IS the load
-                                    # setting. NOT a flywheel: pure inertia adds
-                                    # no steady-state torque.
-FAULT_CONDITION = 'healthy'         # e.g. 'healthy', 'imbalance_l1', 'bearing_worn'
-ROOM_CONDITION  = 'unlabelled'      # quiet | noise | unlabelled
-NOTES           = ''
-
-# Fixed vocabulary, not free text. It has already drifted once -- the first
-# provenanced sessions were written 'quiet_night'/'noisy_day_hvac' and the
-# vocabulary settled on 'quiet'/'noise' on 2026-08-04. session.json is the
-# authoritative label, so a typo here is a mislabelled session that nobody
-# notices until analysis. To add a level, add it here deliberately.
-#
-# 'unlabelled' is the default and is deliberate: back-to-back auto runs cross
-# ambient conditions on their own schedule, so the room is judged per session
-# afterwards rather than asserted up front. It reads as "pending", which an
-# empty string does not -- that reads as "forgot".
-ROOM_CONDITIONS = ('quiet', 'noise', 'unlabelled')
-if ROOM_CONDITION not in ROOM_CONDITIONS:
-    raise SystemExit(f'ROOM_CONDITION={ROOM_CONDITION!r} is not one of '
-                     f'{ROOM_CONDITIONS} -- fix it before recording.')
-
 MAGIC        = 0xA55A
 HDR_FMT      = '<HBBIHH'          # magic, type, flags, seq, payloadLen, dropped
 HDR_SIZE     = struct.calcsize(HDR_FMT)
-STATUS_FMT   = '<ffBBIIIHIB'      # ... + ctrl1XL read back from the IIS3DWB
+STATUS_FMT   = '<ffBBIIIHIBhh'    # ... + currentMa from the ACS712
 STATUS_SIZE  = struct.calcsize(STATUS_FMT)
+STATUS_FMT_V4  = '<ffBBIIIHIBh'   # pwmDuty, but no current sensor
+STATUS_SIZE_V4 = struct.calcsize(STATUS_FMT_V4)
+STATUS_FMT_V3  = '<ffBBIIIHIB'    # ctrl1XL readback, but no pwmDuty
+STATUS_SIZE_V3 = struct.calcsize(STATUS_FMT_V3)
 STATUS_FMT_V2  = '<ffBBIIIHI'     # older firmware without the CTRL1_XL readback
 STATUS_SIZE_V2 = struct.calcsize(STATUS_FMT_V2)
 STATUS_FMT_V1  = '<ffBBIIIH'      # ... and without the txdrop field
 STATUS_SIZE_V1 = struct.calcsize(STATUS_FMT_V1)
+STATUS_SIZES = (STATUS_SIZE, STATUS_SIZE_V4, STATUS_SIZE_V3,
+                STATUS_SIZE_V2, STATUS_SIZE_V1)
 
 # IIS3DWB CTRL1_XL (10h) bits [3:2] = FS[1:0]_XL.
 # DS12569 Rev 8, Table 30, p.32.
@@ -175,7 +122,7 @@ stamp = started_at.strftime('%Y%m%d_%H%M%S')
 # operating_point() keys on the first '_'-separated field, so the label has to
 # stay first. Overnight runs start one day and end the next -- this is the start.
 session_dir = os.path.join(
-    SAVE_ROOT, f'{SESSION_LABEL}_{stamp}_{started_at.strftime("%a")}')
+    RAW_ROOT, f'{SESSION_LABEL}_{stamp}_{started_at.strftime("%a")}')
 os.makedirs(session_dir, exist_ok=True)
 
 vib_file = open(os.path.join(session_dir, 'vibration.bin'), 'wb')
@@ -187,9 +134,12 @@ audio_wav.setframerate(AUDIO_SR_HZ)
 
 status_csv = open(os.path.join(session_dir, 'status.csv'), 'w', newline='')
 status_writer = csv.writer(status_csv)
+# New columns are appended, never inserted -- anything reading this file by
+# position keeps working. Empty when the firmware is too old to report them.
 status_writer.writerow(['host_time', 'obj_temp_c', 'amb_temp_c', 'motor_running',
                         'fault', 'uptime_s', 'vib_packets', 'audio_packets',
-                        'fifo_overruns', 'tx_dropped_packets'])
+                        'fifo_overruns', 'tx_dropped_packets',
+                        'pwm_duty', 'current_a'])
 
 index_csv = open(os.path.join(session_dir, 'packet_index.csv'), 'w', newline='')
 index_writer = csv.writer(index_csv)
@@ -246,6 +196,12 @@ stats = {
     'device_resets': 0,
     'ctrl1_xl': None,             # CTRL1_XL as the sensor reports it
     'accel_fs_g_reported': None,  # full scale derived from it
+    'pwm_duty': None,             # settled duty the board reports while running
+    'pwm_duty_max': 0,            # peak seen -- shows the kick-start
+    'current_ma_sum': 0,          # running mean of motor current, motor ON only
+    'current_ma_n': 0,
+    'current_ma_max': None,       # peak draw -- catches the kick and any binding
+    'current_ma_idle': None,      # last reading with the motor OFF, a zero check
     'vib_samples':  0,
     'audio_samples': 0,
     'last_fault':   'NONE',
@@ -292,13 +248,22 @@ def handle_packet(ptype, flags, seq, dropped, payload, host_time):
         n_samples = len(payload) // 2
         stats['audio_samples'] += n_samples
 
-    elif ptype == PKT_STATUS and len(payload) in (STATUS_SIZE, STATUS_SIZE_V2,
-                                                  STATUS_SIZE_V1):
+    elif ptype == PKT_STATUS and len(payload) in STATUS_SIZES:
         ctrl1 = None
+        duty = None
+        cur_ma = None
         if len(payload) == STATUS_SIZE:
             (obj_t, amb_t, running, fault, uptime,
              vib_pkts, aud_pkts, overruns, tx_drops,
-             ctrl1) = struct.unpack(STATUS_FMT, payload)
+             ctrl1, duty, cur_ma) = struct.unpack(STATUS_FMT, payload)
+        elif len(payload) == STATUS_SIZE_V4:
+            (obj_t, amb_t, running, fault, uptime,
+             vib_pkts, aud_pkts, overruns, tx_drops,
+             ctrl1, duty) = struct.unpack(STATUS_FMT_V4, payload)
+        elif len(payload) == STATUS_SIZE_V3:
+            (obj_t, amb_t, running, fault, uptime,
+             vib_pkts, aud_pkts, overruns, tx_drops,
+             ctrl1) = struct.unpack(STATUS_FMT_V3, payload)
         elif len(payload) == STATUS_SIZE_V2:
             (obj_t, amb_t, running, fault, uptime,
              vib_pkts, aud_pkts, overruns, tx_drops) = struct.unpack(STATUS_FMT_V2, payload)
@@ -310,13 +275,37 @@ def handle_packet(ptype, flags, seq, dropped, payload, host_time):
             stats['_old_fw_warned'] = True
             print(f"{C['YELLOW']}!! board is running older firmware (no CTRL1_XL "
                   f"readback) — the full scale in session.json is DECLARED, not "
-                  f"measured. Reflash edge_asset_monitor.ino{C['RESET']}")
+                  f"measured. Reflash firmware/mdc/mdc.ino{C['RESET']}")
 
         # The declared ACCEL_FS_G is what this file was told to expect; ctrl1 is
         # what the sensor reports. They diverge when the firmware constant is
         # edited but the build is never flashed, which is how the 2026-08-01..02
         # sessions came to claim +/-4 g while recording at +/-16 g. Caught here
         # the run has not armed yet (ARM_DELAY_S), so nothing is lost.
+        # The duty the board is actually applying. Recorded rather than taken
+        # from a constant: MOTOR_SPEED lives in the firmware, and a firmware
+        # constant that was edited but never flashed is exactly how the +/-16 g
+        # sessions came to claim +/-4 g. Last value seen while running is the
+        # settled one -- the kick and ramp are over within a few seconds.
+        if duty is not None:
+            stats['pwm_duty_max'] = max(stats['pwm_duty_max'], abs(duty))
+            if running:
+                stats['pwm_duty'] = duty
+
+        # Motor current. Averaged over the running part of the session only --
+        # including the motor-off minutes would drag the mean toward zero and
+        # make it meaningless. Idle is kept separately as a zero check: it should
+        # sit near 0 mA, and a large idle reading means the sensor's boot
+        # calibration was taken while something was already drawing.
+        if cur_ma is not None:
+            if running:
+                stats['current_ma_sum'] += cur_ma
+                stats['current_ma_n'] += 1
+                stats['current_ma_max'] = (cur_ma if stats['current_ma_max'] is None
+                                           else max(stats['current_ma_max'], cur_ma))
+            else:
+                stats['current_ma_idle'] = cur_ma
+
         fs_reported = fs_g_from_ctrl1(ctrl1)
         if fs_reported is not None:
             stats['ctrl1_xl'] = ctrl1
@@ -324,7 +313,7 @@ def handle_packet(ptype, flags, seq, dropped, payload, host_time):
             if fs_reported != ACCEL_FS_G and not stats.get('_fs_mismatch'):
                 stats['_fs_mismatch'] = True
                 print(f"{C['RED']}!! FULL-SCALE MISMATCH — aborting before arm.\n"
-                      f"   data_catcher.py ACCEL_FS_G = +/-{ACCEL_FS_G:g} g\n"
+                      f"   config.py ACCEL_FS_G = +/-{ACCEL_FS_G:g} g\n"
                       f"   sensor CTRL1_XL = 0x{ctrl1:02X} -> +/-{fs_reported:g} g\n"
                       f"   The board is not running the firmware you think it is. "
                       f"Reflash, then re-run.{C['RESET']}")
@@ -356,14 +345,20 @@ def handle_packet(ptype, flags, seq, dropped, payload, host_time):
 
         status_writer.writerow([f'{host_time:.3f}', f'{obj_t:.2f}', f'{amb_t:.2f}',
                                 running, fault_name, uptime, vib_pkts, aud_pkts,
-                                overruns, tx_drops])
+                                overruns, tx_drops,
+                                '' if duty is None else duty,
+                                '' if cur_ma is None else f'{cur_ma / 1000:.3f}'])
         status_csv.flush()
 
         colour = C['GREEN'] if fault == 0 else C['RED']
+        cur_s = ('' if cur_ma is None
+                 else f"{C['WHITE']}{cur_ma / 1000:5.2f}A{C['RESET']}  ")
         print(f"{C['GRAY']}[{uptime:>6}s]{C['RESET']}  "
               f"{C['YELLOW']}obj {obj_t:5.1f}C{C['RESET']}  "
               f"{C['CYAN']}amb {amb_t:5.1f}C{C['RESET']}  "
-              f"{C['MAGENTA']}motor {'ON ' if running else 'OFF'}{C['RESET']}  "
+              f"{C['MAGENTA']}motor {'ON ' if running else 'OFF'}"
+              f"{'' if duty is None else f'({duty:+d})'}{C['RESET']}  "
+              f"{cur_s}"
               f"{colour}{fault_name}{C['RESET']}  "
               f"{C['BLUE']}vib {vib_pkts}{C['RESET']}  "
               f"{C['GREEN']}aud {aud_pkts}{C['RESET']}  "
@@ -519,6 +514,21 @@ summary = {
     'vib_odr_nominal_hz': VIB_ODR_NOMINAL_HZ,
     'audio_sr_hz': AUDIO_SR_HZ,
     'motor_voltage_v': MOTOR_VOLTAGE_V,
+    # Supply voltage above is what the PSU is set to. The motor sees that scaled
+    # by the PWM duty, so this is the number that actually describes the
+    # operating point. Reported by the firmware, not declared here.
+    'motor_pwm_duty': stats['pwm_duty'],
+    'motor_pwm_duty_max': stats['pwm_duty_max'] or None,
+    'motor_effective_v': (None if stats['pwm_duty'] is None else
+                          round(MOTOR_VOLTAGE_V * abs(stats['pwm_duty']) / 255.0, 2)),
+    # Motor current, ACS712 on the +12 V lead. Mean is over the running part of
+    # the session only. current_idle_a is the zero check -- it should be near 0.
+    'current_mean_a': (None if not stats['current_ma_n'] else
+                       round(stats['current_ma_sum'] / stats['current_ma_n'] / 1000, 3)),
+    'current_max_a': (None if stats['current_ma_max'] is None else
+                      round(stats['current_ma_max'] / 1000, 3)),
+    'current_idle_a': (None if stats['current_ma_idle'] is None else
+                       round(stats['current_ma_idle'] / 1000, 3)),
     'mechanical_load': MECHANICAL_LOAD,
     'fault_condition': FAULT_CONDITION,
     'room_condition': ROOM_CONDITION,

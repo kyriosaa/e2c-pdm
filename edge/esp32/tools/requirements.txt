@@ -1,0 +1,15 @@
+# Host-side tools for the ESP32 rig: data_catcher.py, start_handler.py,
+# notifier.py, export_sessions.py.
+#
+#   pip install -r edge/esp32/tools/requirements.txt
+#
+# This is the whole list -- everything else these scripts use is stdlib
+# (struct, csv, json, wave, smtplib, hashlib, argparse, threading, subprocess).
+# Nothing here needs numpy or TensorFlow: this machine records, it does not
+# analyse. Any Python 3.9+ will do.
+
+# Serial link to the CH343 USB bridge.
+# Install the PyPI package "pyserial", NOT "serial" -- both import as `serial`,
+# they collide in site-packages, and the wrong one fails at runtime with
+# AttributeError: module 'serial' has no attribute 'Serial'.
+pyserial>=3.5

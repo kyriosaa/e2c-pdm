@@ -23,23 +23,10 @@ import time
 
 import serial
 
-SERIAL_PORT   = 'COM3'
-BAUD_RATE     = 3000000
-REBOOT_WAIT_S = 4
-
-# Gap between the end of one auto session and the start of the next. Lets the
-# motor and the driver cool back to ambient so every session starts from the
-# same thermal state instead of inheriting the previous run's heat.
-AUTO_GAP_S = int(1 * 3600)
-
-# A session that ends this fast did not run -- data_catcher aborted (bad port,
-# full-scale mismatch, latched fault). Without this, auto mode would happily
-# restart a broken run every hour all night and produce nothing.
-AUTO_MIN_SESSION_S = 300
-
-# How often the auto thread checks whether the session has ended. Keep it well
-# below AUTO_MIN_SESSION_S or a short failed run gets rounded up past the guard.
-AUTO_POLL_S = 2
+# every knob for this rig lives in config.py -- edit that, not this file.
+# data_catcher.py reads the same SERIAL_PORT, so the two cannot drift apart.
+from config import (SERIAL_PORT, BAUD_RATE, REBOOT_WAIT_S, AUTO_GAP_S,
+                    AUTO_MIN_SESSION_S, AUTO_POLL_S)
 
 HERE    = os.path.dirname(os.path.abspath(__file__))
 CATCHER = os.path.join(HERE, 'data_catcher.py')

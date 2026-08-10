@@ -28,12 +28,13 @@ import shutil
 import hashlib
 import argparse
 
-RAW_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                        '..', '..', '..', 'data', 'raw')
+# RAW_ROOT (where data_catcher.py writes) and the copy chunk size live in
+# config.py, shared with the rest of the tools. The manifest format below does
+# not: it is a contract with files already sitting on the transfer drive.
+from config import RAW_ROOT, COPY_CHUNK
+
 MANIFEST_NAME = 'export_manifest.json'
 MANIFEST_VERSION = 1
-CHUNK = 8 * 1024 * 1024        # 8 MiB: large enough that USB throughput, not
-                               # syscall overhead, is the limit
 
 # Written by data_catcher.py. A session missing any of these is incomplete and
 # is refused rather than silently half-exported.
@@ -54,7 +55,7 @@ def sha256_file(path, progress=None):
     done = 0
     with open(path, 'rb') as f:
         while True:
-            buf = f.read(CHUNK)
+            buf = f.read(COPY_CHUNK)
             if not buf:
                 break
             h.update(buf)
@@ -77,7 +78,7 @@ def copy_and_hash(src, dst, progress=None):
     done = 0
     with open(src, 'rb') as fi, open(part, 'wb') as fo:
         while True:
-            buf = fi.read(CHUNK)
+            buf = fi.read(COPY_CHUNK)
             if not buf:
                 break
             fo.write(buf)
@@ -127,11 +128,40 @@ def save_manifest(dest, manifest):
     os.replace(tmp, path)
 
 
+def session_path(root, name):
+    """Where a session named `name` actually lives under `root`.
+
+    Sessions sit either directly under data/raw or one level down in a grouping
+    folder (data/raw/24V/ holds the sessions from the retired motor). The bare
+    name stays the identity everywhere else -- manifest keys and destination
+    directories stay flat, so a drive exported before the grouping still
+    verifies and does not re-copy.
+    """
+    direct = os.path.join(root, name)
+    if os.path.isdir(direct):
+        return direct
+    for group in sorted(os.listdir(root)):
+        nested = os.path.join(root, group, name)
+        if os.path.isdir(nested):
+            return nested
+    return direct
+
+
 def discover(root, only, skip_tests):
     if not os.path.isdir(root):
         sys.exit(f'no such directory: {root}')
-    names = sorted(d for d in os.listdir(root)
-                   if os.path.isdir(os.path.join(root, d)))
+    names = []
+    for d in sorted(os.listdir(root)):
+        p = os.path.join(root, d)
+        if not os.path.isdir(p):
+            continue
+        if os.path.isfile(os.path.join(p, 'session.json')):
+            names.append(d)
+        else:
+            # a grouping folder: take the sessions inside it, by bare name
+            names.extend(sorted(s for s in os.listdir(p)
+                                if os.path.isfile(os.path.join(p, s, 'session.json'))))
+    names = sorted(names)
     if only:
         missing = [n for n in only if n not in names]
         if missing:
@@ -188,7 +218,7 @@ def export(root, dest, names, manifest, recheck):
 
     plan = []
     for name in names:
-        sdir = os.path.join(root, name)
+        sdir = session_path(root, name)
         missing = [f for f in REQUIRED if not os.path.isfile(os.path.join(sdir, f))]
         if missing:
             print(f'  skip {name}: incomplete ({", ".join(missing)})')

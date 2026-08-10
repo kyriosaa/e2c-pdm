@@ -6,9 +6,11 @@ import json
 import paho.mqtt.client as mqtt
 from influxdb_client_3 import InfluxDBClient3, Point
 
-# settings live in the untracked private.py next to the ESP32 host tools
+# settings live next to the ESP32 host tools: credentials in the untracked
+# private.py, everything non-secret in the tracked config.py
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'esp32', 'tools'))
-from private import MQTT_BROKER, MQTT_TOPIC, INFLUX_URL, INFLUX_TOKEN, INFLUX_DATABASE, VIBRATION_THRESHOLD, COLOR as C
+from private import MQTT_BROKER, MQTT_TOPIC, INFLUX_URL, INFLUX_TOKEN, INFLUX_DATABASE, VIBRATION_THRESHOLD
+from config import COLOR as C
 
 client_v3 = InfluxDBClient3(host=INFLUX_URL, token=INFLUX_TOKEN, database=INFLUX_DATABASE)
 
