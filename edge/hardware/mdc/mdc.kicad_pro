@@ -541,7 +541,7 @@
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 0,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 1.5,
+        "track_width": 3.0,
         "tuning_profile": "",
         "via_diameter": 2.5,
         "via_drill": 1.0
@@ -750,7 +750,7 @@
         "uuid": "813130ed-0e1e-452d-b14e-fae57783a961"
       }
     ],
-    "used_designators": "",
+    "used_designators": "J4",
     "variants": []
   },
   "sheets": [
