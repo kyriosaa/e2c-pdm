@@ -33,6 +33,7 @@ edge/hardware/edge_asset_monitor_4L/edge_asset_monitor_4L-backups
 ~*.kicad_*.lck
 *.kicad_pcb-bak
 *.kicad_sch-bak
+*.kicad_prl
 *.bak
 *~
 *.part

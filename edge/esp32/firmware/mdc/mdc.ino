@@ -68,7 +68,12 @@ static const int      MOTOR_SPEED     = 150;
 // Non-blocking: the loop keeps running, so 'X' still stops the motor mid-kick.
 // Kept only as high as it needs to be -- a harder kick than necessary just
 // slams the coupling and shakes the frame on every start.
-static const int      KICK_SPEED      = 160;
+// 2026-08-24: 160 (~7.5 V effective) would not break away, but the motor ran
+// fine wired straight to the 12 V PSU. Raised to 255 -- and the motor STILL
+// did not break away, with pwm_duty telemetry confirming 255 was applied. So
+// the shortfall is in the drive electronics, not the commanded duty; 255 is
+// kept as the correct kick regardless. See quirk register 2.14.
+static const int      KICK_SPEED      = 255;
 static const uint32_t KICK_MS         = 1500;   // full duty, to break away
 static const uint32_t RAMP_MS         = 2000;   // then ease down to MOTOR_SPEED
 

@@ -7,7 +7,7 @@
 	(title_block
 		(title "Motor Data Collector")
 		(date "2026-08-11")
-		(rev "3.0")
+		(rev "3.1")
 		(comment 1 "Department of EECS- AIoT and Energy Management Lab")
 		(comment 2 "National Taipei University of Technology 國立臺北科技大學")
 		(comment 3 "Advisor: Meng-Yun Chung 鍾孟雲")

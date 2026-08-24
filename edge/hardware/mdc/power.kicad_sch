@@ -6,8 +6,8 @@
 	(paper "A4")
 	(title_block
 		(title "Power")
-		(date "2026-08-11")
-		(rev "3.0")
+		(date "2026-08-24")
+		(rev "3.1")
 		(comment 1 "Department of EECS- AIoT and Energy Management Lab")
 		(comment 2 "National Taipei University of Technology 國立臺北科技大學")
 		(comment 3 "Advisor: Meng-Yun Chung 鍾孟雲")
@@ -1279,28 +1279,10 @@
 		(uuid "f43c046e-6cf4-4c8e-8297-83b387734175")
 	)
 	(junction
-		(at 144.78 78.74)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "0b8343e6-f9f1-402b-a5d4-a60101317de3")
-	)
-	(junction
 		(at 160.02 78.74)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "7f601c17-aa32-48d8-aa4b-a1dacb47c766")
-	)
-	(junction
-		(at 135.89 86.36)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "926d8a12-b8fc-44be-a704-2bcb1f53203c")
-	)
-	(junction
-		(at 144.78 93.98)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "97ba756a-0d5a-4d41-aade-332078a83eaa")
 	)
 	(junction
 		(at 158.75 132.08)
@@ -1332,26 +1314,6 @@
 	)
 	(wire
 		(pts
-			(xy 144.78 87.63) (xy 144.78 93.98)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "02ddcd1a-1fd8-40e6-a25c-4ebf53d0bb99")
-	)
-	(wire
-		(pts
-			(xy 144.78 78.74) (xy 144.78 85.09)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "06d1c925-c5dd-4fb3-ae4f-74ec17debfd9")
-	)
-	(wire
-		(pts
 			(xy 151.13 128.27) (xy 151.13 127)
 		)
 		(stroke
@@ -1359,36 +1321,6 @@
 			(type default)
 		)
 		(uuid "07f9a405-e6a7-483d-9ae3-e7eec354664e")
-	)
-	(wire
-		(pts
-			(xy 130.81 86.36) (xy 135.89 86.36)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1b37c205-edee-4c9f-a7be-15699af93043")
-	)
-	(wire
-		(pts
-			(xy 143.51 85.09) (xy 144.78 85.09)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "33f3e72e-892a-43fd-a9c6-69b4d10c1d0e")
-	)
-	(wire
-		(pts
-			(xy 144.78 93.98) (xy 160.02 93.98)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "386a2a5b-b1f7-42e9-96f8-54940fd7d8b4")
 	)
 	(wire
 		(pts
@@ -1422,33 +1354,13 @@
 	)
 	(wire
 		(pts
-			(xy 124.46 78.74) (xy 144.78 78.74)
+			(xy 124.46 78.74) (xy 148.59 78.74)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "7216bdec-ad3c-40e9-8ec3-6d2c8c2545f0")
-	)
-	(wire
-		(pts
-			(xy 135.89 86.36) (xy 135.89 87.63)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "77fc9b71-04f8-4551-b635-78b5cb010cd1")
-	)
-	(wire
-		(pts
-			(xy 135.89 85.09) (xy 135.89 86.36)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "790d2066-f2b9-4b0f-9fa5-783bea41058f")
 	)
 	(wire
 		(pts
@@ -1482,16 +1394,6 @@
 	)
 	(wire
 		(pts
-			(xy 135.89 93.98) (xy 144.78 93.98)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9163edac-56da-4c0d-85b7-483927088706")
-	)
-	(wire
-		(pts
 			(xy 124.46 85.09) (xy 124.46 78.74)
 		)
 		(stroke
@@ -1509,16 +1411,6 @@
 			(type default)
 		)
 		(uuid "99e3ea9c-5279-49b2-96ed-838729028205")
-	)
-	(wire
-		(pts
-			(xy 143.51 87.63) (xy 144.78 87.63)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9b2da7a8-4c64-4b52-9109-b3e3808179f0")
 	)
 	(wire
 		(pts
@@ -1542,26 +1434,6 @@
 	)
 	(wire
 		(pts
-			(xy 138.43 87.63) (xy 135.89 87.63)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ac284b44-f861-4453-bc74-04ba7eb28061")
-	)
-	(wire
-		(pts
-			(xy 135.89 85.09) (xy 138.43 85.09)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b37b15e8-37c6-4cb9-ab30-ee88ca925dcb")
-	)
-	(wire
-		(pts
 			(xy 160.02 93.98) (xy 160.02 88.9)
 		)
 		(stroke
@@ -1569,16 +1441,6 @@
 			(type default)
 		)
 		(uuid "c875c1ee-b11b-46d3-a687-77bf22a8cccb")
-	)
-	(wire
-		(pts
-			(xy 144.78 78.74) (xy 148.59 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e3df30f0-4b2b-4568-9153-3f3d2de3593d")
 	)
 	(wire
 		(pts
@@ -1592,7 +1454,7 @@
 	)
 	(wire
 		(pts
-			(xy 124.46 93.98) (xy 125.73 93.98)
+			(xy 124.46 93.98) (xy 160.02 93.98)
 		)
 		(stroke
 			(width 0)
@@ -1715,7 +1577,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_VH_B2P-VH-B_1x02_P3.96mm_Vertical"
+		(property "Footprint" "TerminalBlock:TerminalBlock_MaiXu_MX126-5.0-02P_1x02_P5.00mm"
 			(at 118.11 87.63 0)
 			(hide yes)
 			(show_name no)
@@ -1764,85 +1626,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R_Small")
-		(at 140.97 87.63 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "294e63c8-79ac-43d5-98c5-d9086ddae654")
-		(property "Reference" "R14"
-			(at 140.97 89.408 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-			)
-		)
-		(property "Value" "100k"
-			(at 140.97 91.186 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 140.97 87.63 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 140.97 87.63 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
-			(at 140.97 87.63 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "88e5d620-2116-4707-9505-56ce62d8d9eb")
-		)
-		(pin "2"
-			(uuid "fc2ca69c-f0d8-4d4c-aca9-259fcb207d29")
-		)
-		(instances
-			(project "mdc"
-				(path "/813130ed-0e1e-452d-b14e-fae57783a961/747a2106-db37-4aed-b41f-3c0ea0387f8e"
-					(reference "R14")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Connector_Generic:Conn_01x02")
 		(at 170.18 85.09 0)
 		(unit 1)
@@ -1875,7 +1658,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_VH_B2P-VH-B_1x02_P3.96mm_Vertical"
+		(property "Footprint" "TerminalBlock:TerminalBlock_MaiXu_MX126-5.0-02P_1x02_P5.00mm"
 			(at 170.18 85.09 0)
 			(hide yes)
 			(show_name no)
@@ -2196,7 +1979,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_VH_B2P-VH-B_1x02_P3.96mm_Vertical"
+		(property "Footprint" "TerminalBlock:TerminalBlock_MaiXu_MX126-5.0-02P_1x02_P5.00mm"
 			(at 146.05 130.81 0)
 			(hide yes)
 			(show_name no)
@@ -2239,86 +2022,6 @@
 			(project "mdc"
 				(path "/813130ed-0e1e-452d-b14e-fae57783a961/747a2106-db37-4aed-b41f-3c0ea0387f8e"
 					(reference "J2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_Small")
-		(at 140.97 85.09 90)
-		(mirror x)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "be56abc1-c662-4a00-bcb1-69dd58ac2b3b")
-		(property "Reference" "R15"
-			(at 140.97 83.312 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-			)
-		)
-		(property "Value" "10k"
-			(at 140.97 81.534 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 140.97 85.09 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 140.97 85.09 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
-			(at 140.97 85.09 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "d10f5439-1f4c-4258-9177-a02cc3e2f703")
-		)
-		(pin "2"
-			(uuid "6060d98f-ed46-44e6-ab36-3f17d2dc9665")
-		)
-		(instances
-			(project "mdc"
-				(path "/813130ed-0e1e-452d-b14e-fae57783a961/747a2106-db37-4aed-b41f-3c0ea0387f8e"
-					(reference "R15")
 					(unit 1)
 				)
 			)
@@ -2404,92 +2107,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Transistor_FET:IRF540N")
-		(at 130.81 91.44 90)
-		(mirror x)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "ded1aa78-b48f-4d7a-bc2b-b6b538ea540e")
-		(property "Reference" "Q5"
-			(at 130.81 100.33 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "IRFZ44N"
-			(at 130.81 97.79 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_THT:TO-220-3_Vertical"
-			(at 132.715 96.52 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-					(italic yes)
-				)
-				(justify left)
-			)
-		)
-		(property "Datasheet" ""
-			(at 134.62 96.52 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Description" ""
-			(at 130.81 91.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "3"
-			(uuid "9ba4904f-38e4-4bd0-a06c-e73cbcaba2d0")
-		)
-		(pin "1"
-			(uuid "1b14eee6-f2ba-455e-92cc-9b116fe81e47")
-		)
-		(pin "2"
-			(uuid "106cf3e4-1a03-484c-8b76-126c8a2cd8bb")
-		)
-		(instances
-			(project "mdc"
-				(path "/813130ed-0e1e-452d-b14e-fae57783a961/747a2106-db37-4aed-b41f-3c0ea0387f8e"
-					(reference "Q5")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:Fuse")
 		(at 152.4 78.74 90)
 		(unit 1)
@@ -2510,7 +2127,7 @@
 				)
 			)
 		)
-		(property "Value" "6A"
+		(property "Value" "T10A"
 			(at 152.4 76.708 90)
 			(show_name no)
 			(do_not_autoplace no)

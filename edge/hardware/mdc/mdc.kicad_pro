@@ -60,7 +60,7 @@
           "hatch_smoothing_level": 0,
           "hatch_smoothing_value": 0.1,
           "hatch_thickness": 1.0,
-          "min_clearance": 1.0,
+          "min_clearance": 0.0,
           "min_island_area": 10.0,
           "min_thickness": 0.25,
           "pad_connection": 1,
@@ -259,7 +259,7 @@
       "internal_id": "",
       "mfg": "",
       "mpn": "",
-      "sch_revision": "3.0"
+      "sch_revision": "3.1"
     },
     "layer_pairs": [],
     "layer_presets": [],
@@ -626,7 +626,7 @@
     "last_paths": {
       "idf": "",
       "netlist": "",
-      "plot": "D:/projects/e2c-pdm/docs/layouts/rev3.0/",
+      "plot": "D:/projects/e2c-pdm/docs/layouts/rev3.0/3.1/",
       "specctra_dsn": "",
       "vrml": ""
     },
