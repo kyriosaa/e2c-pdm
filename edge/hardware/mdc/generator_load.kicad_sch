@@ -6,8 +6,8 @@
 	(paper "A4")
 	(title_block
 		(title "Generator Load")
-		(date "2026-08-10")
-		(rev "3.0")
+		(date "2026-08-11")
+		(rev "3.1")
 		(company "Components not part of PCB layout")
 		(comment 1 "Department of EECS- AIoT and Energy Management Lab")
 		(comment 2 "National Taipei University of Technology 國立臺北科技大學")

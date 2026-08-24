@@ -105,6 +105,9 @@ def main() -> None:
                         axis=1)
     thr_f = float(np.percentile(err_va_f, 99))
     thr_i8 = float(np.percentile(err_va_i8, 99))
+    # The FPR the float threshold would actually have on the int8 device:
+    # the cost of inheriting it instead of re-deriving.
+    fpr_inherited = float((err_va_i8 > thr_f).mean())
 
     def kb(b):
         return len(b) / 1024
@@ -116,8 +119,30 @@ def main() -> None:
           f"(delta {100 * (err_dyn.mean() / err_float.mean() - 1):+.2f}%)")
     print(f"  full int8    {err_i8.mean():.5f} "
           f"(delta {100 * (err_i8.mean() / err_float.mean() - 1):+.2f}%)")
+    print(f"\np99 threshold (validation):")
+    print(f"  float32      {thr_f:.5f}")
+    print(f"  full int8    {thr_i8:.5f} "
+          f"(shift {100 * (thr_i8 / thr_f - 1):+.2f}%)")
+    print(f"  Inheriting the float threshold on the int8 device gives a "
+          f"{fpr_inherited:.2%} FPR")
+    print(f"  instead of the nominal 1 % -- the int8 threshold is the "
+          f"deployable one.")
     print("\nSmall deltas (<~5%) mean quantization is safe for the edge tier. "
           "Record these numbers - they're a thesis table.")
+
+    with open(C.ARTIFACTS_DIR / "quantize.json", "w") as f:
+        json.dump({
+            "size_kb_dynamic": kb(tfl_dyn),
+            "size_kb_int8": kb(tfl_int8),
+            "test_mse_float": float(err_float.mean()),
+            "test_mse_dynamic": float(err_dyn.mean()),
+            "test_mse_int8": float(err_i8.mean()),
+            "thr_float_p99": thr_f,
+            "thr_int8_p99": thr_i8,
+            "thr_shift_pct": 100 * (thr_i8 / thr_f - 1),
+            "fpr_if_float_thr_inherited": fpr_inherited,
+        }, f, indent=2)
+    print(f"Wrote {(C.ARTIFACTS_DIR / 'quantize.json').relative_to(C.REPO_ROOT)}")
 
 
 if __name__ == "__main__":

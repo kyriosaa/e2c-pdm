@@ -76,6 +76,16 @@ def all_sessions() -> list[Path]:
     return sorted(found, key=lambda p: p.name)
 
 
+def raw_session_names() -> set[str]:
+    """Directory names of every recorded session under data/raw.
+
+    The authority on what is a real session. A cached feature directory whose
+    name is not in here has no recording behind it -- see
+    ml.features.orphaned_features().
+    """
+    return {p.name for p in all_sessions()}
+
+
 # ---------------------------------------------------------------------------
 # Wire format  (documented here; NOT used to parse vibration.bin)
 # ---------------------------------------------------------------------------
@@ -197,9 +207,23 @@ WELCH_NPERSEG = 8192
 #
 # DECISION PENDING: raise this to 4097 (the full band) before recording any
 # bearing-fault condition, and compare discriminative power against the 1024-bin
-# set. Document whichever the thesis defends. Cost of the full band is 4x the
-# feature cache and a 4x wider model input layer.
+# set. Document whichever the thesis defends. Cost of the full band is a 4x
+# wider model input layer.
+#
+# Since 2026-08-20 this is a LOAD-TIME truncation, not an extraction-time one:
+# the cache stores FFT_BINS_STORE bins and load_session_features() slices to
+# FFT_BINS_KEEP. Changing this value is therefore a config edit plus a retrain,
+# NOT a re-extraction of the raw data -- provided the cache was extracted with
+# FFT_BINS_STORE = None (full band). Caches extracted before this date store
+# 1024 bins and support only FFT_BINS_KEEP <= 1024.
 FFT_BINS_KEEP = 1024
+
+# How many PSD bins the feature CACHE stores. None = the full Welch band
+# (WELCH_NPERSEG // 2 + 1 = 4097 bins), so the FFT_BINS_KEEP decision stays
+# reversible after the recording campaign. Costs 4x the cache disk (~700 MB
+# per 6 h session instead of ~170 MB) and nothing else: extraction computes the
+# full rFFT either way. Set to a number only if disk is genuinely tight.
+FFT_BINS_STORE = None
 
 # How to collapse the 3 accelerometer axes into a spectrum.
 #   "power_mean" : mean of per-axis power spectra, then dB. Linear in power,

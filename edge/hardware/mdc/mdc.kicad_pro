@@ -60,7 +60,7 @@
           "hatch_smoothing_level": 0,
           "hatch_smoothing_value": 0.1,
           "hatch_thickness": 1.0,
-          "min_clearance": 1.0,
+          "min_clearance": 0.0,
           "min_island_area": 10.0,
           "min_thickness": 0.25,
           "pad_connection": 1,
@@ -259,7 +259,7 @@
       "internal_id": "",
       "mfg": "",
       "mpn": "",
-      "sch_revision": "3.0"
+      "sch_revision": "3.1"
     },
     "layer_pairs": [],
     "layer_presets": [],
@@ -541,7 +541,7 @@
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 0,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 1.5,
+        "track_width": 3.0,
         "tuning_profile": "",
         "via_diameter": 2.5,
         "via_drill": 1.0
@@ -626,7 +626,7 @@
     "last_paths": {
       "idf": "",
       "netlist": "",
-      "plot": "D:/projects/e2c-pdm/docs/layouts/rev3.0/",
+      "plot": "D:/projects/e2c-pdm/docs/layouts/rev3.0/3.1/",
       "specctra_dsn": "",
       "vrml": ""
     },
@@ -750,7 +750,7 @@
         "uuid": "813130ed-0e1e-452d-b14e-fae57783a961"
       }
     ],
-    "used_designators": "",
+    "used_designators": "J4",
     "variants": []
   },
   "sheets": [

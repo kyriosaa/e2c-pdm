@@ -54,6 +54,9 @@ def main() -> None:
                     help="extra session to score as an off-manifold check")
     args = ap.parse_args()
 
+    if args.novelty:
+        F.require_raw_counterpart([args.novelty])
+
     tf = require_tf()
     import matplotlib
     matplotlib.use("Agg")

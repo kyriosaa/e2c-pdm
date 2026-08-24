@@ -159,9 +159,12 @@ def extract_session(session_dir: Path, verbose: bool = True) -> dict:
               f"{len(starts_kept):,} with motor running "
               f"({len(starts) - len(starts_kept):,} dropped)")
 
+    # The cache stores FFT_BINS_STORE bins (None = the full band); the model's
+    # FFT_BINS_KEEP truncation happens at LOAD time, so it can be revisited
+    # without re-extracting the raw data. See config.py.
     win, scale, freqs = _welch_setup(odr, C.WELCH_NPERSEG)
-    keep = (len(freqs) if C.FFT_BINS_KEEP is None
-            else min(C.FFT_BINS_KEEP, len(freqs)))
+    keep = (len(freqs) if C.FFT_BINS_STORE is None
+            else min(C.FFT_BINS_STORE, len(freqs)))
 
     vib = DL.open_vibration(session_dir)
     n_feat = keep * (3 if C.AXIS_COMBINE == "per_axis" else 1)
@@ -209,14 +212,104 @@ def save_session_features(res: dict) -> Path:
     return out_dir
 
 
-def load_session_features(session_name: str) -> dict:
+def cached_sessions() -> list[str]:
+    """Every session name holding a complete feature cache, sorted."""
+    if not C.FEATURES_DIR.exists():
+        return []
+    return sorted(d.name for d in C.FEATURES_DIR.iterdir()
+                  if (d / "meta.json").exists())
+
+
+def orphaned_features() -> list[str]:
+    """Cached feature directories with no session of that name in data/raw.
+
+    These exist. Three directories predating the weekday suffix survive as
+    exact duplicates of live sessions (docs/notes/quirk_register.md 3.2).
+    Left in a training pool they put the SAME session in both train and test,
+    and the held-out false-positive rate comes back excellent and meaningless.
+    Remembering to pass --sessions is not a defence; this is.
+
+    Returns [] when data/raw is empty rather than condemning every cache, so a
+    features-only checkout still runs.
+    """
+    raw = C.raw_session_names()
+    if not raw:
+        return []
+    return [n for n in cached_sessions() if n not in raw]
+
+
+def usable_sessions() -> list[str]:
+    """Cached sessions that have a recording behind them. Warns about the rest."""
+    orphans = orphaned_features()
+    if orphans:
+        print(f"[warn] ignoring {len(orphans)} cached feature dir(s) with no "
+              f"session in {C.RAW_DIR.name}/:")
+        for n in orphans:
+            print(f"         {n}")
+        print(f"       Duplicates of live sessions; see quirk_register.md 3.2.")
+    return [n for n in cached_sessions() if n not in orphans]
+
+
+def require_raw_counterpart(names) -> None:
+    """Abort if any named session has no recording under data/raw.
+
+    Called on explicitly-passed session lists, where the caller has bypassed
+    usable_sessions() and could otherwise name an orphan by hand.
+    """
+    raw = C.raw_session_names()
+    if not raw:
+        return
+    bad = [n for n in names if n not in raw]
+    if bad:
+        raise SystemExit(
+            f"These sessions have cached features but no recording under "
+            f"{C.RAW_DIR}:\n  " + "\n  ".join(bad) +
+            f"\n\nThey are duplicates of live sessions left over from before "
+            f"the weekday suffix (docs/notes/quirk_register.md 3.2). Training "
+            f"on them puts one session in both train and test. Use the "
+            f"suffixed names, or delete the stale directories.")
+
+
+def load_session_features(session_name: str,
+                           n_bins: int | None = None) -> dict:
+    """Load a cached session, truncated to n_bins PSD bins per axis block.
+
+    n_bins defaults to config.FFT_BINS_KEEP; None on both means everything the
+    cache stores. The cache may hold MORE bins than the model uses
+    (FFT_BINS_STORE, see config.py) -- truncation happens here so revisiting
+    FFT_BINS_KEEP is a config edit, not a re-extraction. Asking for more bins
+    than the cache stores is the one case that does need re-extraction, and
+    aborts saying so.
+    """
     d = C.FEATURES_DIR / session_name
     with open(d / "meta.json") as f:
         meta = json.load(f)
+    feats = np.load(d / "vib_psd_db.npy")
+    freqs = np.load(d / "freqs_hz.npy")
+    want = C.FFT_BINS_KEEP if n_bins is None else n_bins
+    stored = len(freqs)
+    if want is not None and want != stored:
+        if want > stored:
+            raise SystemExit(
+                f"{session_name}: cache stores {stored} PSD bins but "
+                f"FFT_BINS_KEEP asks for {want}. This cache predates full-band "
+                f"storage; re-extract it:\n"
+                f"    python -m ml.features {session_name}")
+        combine = meta.get("axis_combine", "power_mean")
+        if combine == "per_axis":
+            feats = feats.reshape(len(feats), 3, stored)[:, :, :want]
+            feats = np.ascontiguousarray(feats.reshape(len(feats), -1))
+        else:
+            feats = np.ascontiguousarray(feats[:, :want])
+        freqs = freqs[:want]
+        meta = {**meta,
+                "n_bins": int(feats.shape[1]),
+                "n_bins_stored": stored,
+                "band_hz": [float(freqs[0]), float(freqs[-1])]}
     return {
         "meta": meta,
-        "features": np.load(d / "vib_psd_db.npy"),
-        "freqs": np.load(d / "freqs_hz.npy"),
+        "features": feats,
+        "freqs": freqs,
         "starts": np.load(d / "window_start_sample.npy"),
         "host_time": np.load(d / "window_host_time.npy"),
         "thermal_delta_c": np.load(d / "thermal_delta_c.npy"),

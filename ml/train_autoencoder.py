@@ -58,10 +58,8 @@ def require_tf():
 # Dataset assembly
 # ---------------------------------------------------------------------------
 def available_sessions() -> list[str]:
-    if not C.FEATURES_DIR.exists():
-        return []
-    return sorted(d.name for d in C.FEATURES_DIR.iterdir()
-                  if (d / "meta.json").exists())
+    """Cached sessions with a recording behind them, orphans excluded."""
+    return F.usable_sessions()
 
 
 def assemble(session_names: list[str]) -> tuple[np.ndarray, np.ndarray, dict]:
@@ -166,6 +164,7 @@ def main() -> None:
     tf.random.set_seed(C.RANDOM_SEED)
 
     names = args.sessions or available_sessions()
+    F.require_raw_counterpart(names)
     if not names:
         raise SystemExit(f"No cached features in {C.FEATURES_DIR}. "
                          f"Run: python -m ml.features")
